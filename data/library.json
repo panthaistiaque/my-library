@@ -1,0 +1,330 @@
+{
+    "meta": {
+        "next_ids": {
+            "book": 6,
+            "tag": 31,
+            "shelf": 5,
+            "loan": 2
+        }
+    },
+    "books": [
+        {
+            "id": 1,
+            "title": "পথের পাঁচালী",
+            "author": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+            "isbn": "9789840000001",
+            "publisher": "মিত্র ও ঘোষ",
+            "publication_year": "1929",
+            "edition": "1st",
+            "language": "বাংলা",
+            "shelf_id": 1,
+            "status": "Available",
+            "cover_url": "",
+            "purchase_date": "",
+            "purchase_price": "350",
+            "notes": "বাংলা সাহিত্যের একটি বিখ্যাত উপন্যাস",
+            "tag_ids": [
+                1,
+                3,
+                17,
+                25
+            ],
+            "updated_at": "2026-10-07 12:48:30",
+            "created_at": "2026-10-07 12:25:02"
+        },
+        {
+            "id": 2,
+            "title": "সঞ্চয়িতা",
+            "author": "রবীন্দ্রনাথ ঠাকুর",
+            "isbn": "9789840000002",
+            "publisher": "বিশ্বভারতী",
+            "publication_year": "1931",
+            "edition": "12th",
+            "language": "বাংলা",
+            "shelf_id": 2,
+            "status": "Available",
+            "cover_url": "",
+            "purchase_date": "",
+            "purchase_price": "500",
+            "notes": "রবীন্দ্রনাথ ঠাকুরের বিখ্যাত কবিতা সংকলন",
+            "tag_ids": [
+                3,
+                17,
+                24
+            ],
+            "updated_at": "2026-10-07 12:25:02",
+            "created_at": "2026-10-07 12:25:02"
+        },
+        {
+            "id": 3,
+            "title": "দেবদাস",
+            "author": "শরৎচন্দ্র চট্টোপাধ্যায়",
+            "isbn": "9789840000003",
+            "publisher": "অমর সাহিত্য",
+            "publication_year": "1917",
+            "edition": "5th",
+            "language": "বাংলা",
+            "shelf_id": 1,
+            "status": "Lent",
+            "cover_url": "",
+            "purchase_date": "",
+            "purchase_price": "280",
+            "notes": "বাংলা সাহিত্যের অন্যতম জনপ্রিয় প্রেমের উপন্যাস",
+            "tag_ids": [
+                1,
+                3,
+                25
+            ],
+            "updated_at": "2026-10-07 12:25:02",
+            "created_at": "2026-10-07 12:25:02"
+        },
+        {
+            "id": 4,
+            "title": "হাজার বছর ধরে",
+            "author": "জহির রায়হান",
+            "isbn": "9789840000004",
+            "publisher": "বাংলা একাডেমি",
+            "publication_year": "1964",
+            "edition": "3rd",
+            "language": "বাংলা",
+            "shelf_id": 3,
+            "status": "Lent",
+            "cover_url": "",
+            "purchase_date": "",
+            "purchase_price": "320",
+            "notes": "বাংলার গ্রামীণ সমাজ ও মানুষের জীবন নিয়ে লেখা একটি উপন্যাস",
+            "tag_ids": [
+                1,
+                3,
+                17,
+                25
+            ],
+            "updated_at": "2026-10-07 12:25:02",
+            "created_at": "2026-10-07 12:25:02"
+        },
+        {
+            "id": 5,
+            "title": "লালসালু",
+            "author": "সৈয়দ ওয়ালীউল্লাহ",
+            "isbn": "9789840000005",
+            "publisher": "স্টুডেন্ট ওয়েজ",
+            "publication_year": "1948",
+            "edition": "8th",
+            "language": "বাংলা",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "",
+            "purchase_date": "",
+            "purchase_price": "400",
+            "notes": "বাংলা সাহিত্যের একটি গুরুত্বপূর্ণ সামাজিক উপন্যাস",
+            "tag_ids": [
+                1,
+                3,
+                7,
+                25
+            ],
+            "updated_at": "2026-10-07 12:25:02",
+            "created_at": "2026-10-07 12:25:02"
+        }
+    ],
+    "tags": [
+        {
+            "id": 1,
+            "name": "Fiction"
+        },
+        {
+            "id": 2,
+            "name": "Non-Fiction"
+        },
+        {
+            "id": 3,
+            "name": "Literature"
+        },
+        {
+            "id": 4,
+            "name": "History"
+        },
+        {
+            "id": 5,
+            "name": "Biography"
+        },
+        {
+            "id": 6,
+            "name": "Philosophy"
+        },
+        {
+            "id": 7,
+            "name": "Religion"
+        },
+        {
+            "id": 8,
+            "name": "Science"
+        },
+        {
+            "id": 9,
+            "name": "Technology"
+        },
+        {
+            "id": 10,
+            "name": "Business"
+        },
+        {
+            "id": 11,
+            "name": "Finance"
+        },
+        {
+            "id": 12,
+            "name": "Psychology"
+        },
+        {
+            "id": 13,
+            "name": "Politics"
+        },
+        {
+            "id": 14,
+            "name": "Education"
+        },
+        {
+            "id": 15,
+            "name": "Health"
+        },
+        {
+            "id": 16,
+            "name": "Travel"
+        },
+        {
+            "id": 17,
+            "name": "Culture"
+        },
+        {
+            "id": 18,
+            "name": "Art"
+        },
+        {
+            "id": 19,
+            "name": "Geography"
+        },
+        {
+            "id": 20,
+            "name": "Self-Development"
+        },
+        {
+            "id": 21,
+            "name": "Reference"
+        },
+        {
+            "id": 22,
+            "name": "Academic"
+        },
+        {
+            "id": 23,
+            "name": "Research"
+        },
+        {
+            "id": 24,
+            "name": "Poetry"
+        },
+        {
+            "id": 25,
+            "name": "Novel"
+        },
+        {
+            "id": 26,
+            "name": "Short Stories"
+        },
+        {
+            "id": 27,
+            "name": "Memoir"
+        },
+        {
+            "id": 28,
+            "name": "Essays"
+        },
+        {
+            "id": 29,
+            "name": "Children"
+        },
+        {
+            "id": 30,
+            "name": "Lifestyle"
+        }
+    ],
+    "shelves": [
+        {
+            "id": 1,
+            "name": "Shelf 1",
+            "location": "Book Cabinet",
+            "level": 1
+        },
+        {
+            "id": 2,
+            "name": "Shelf 2",
+            "location": "Book Cabinet",
+            "level": 2
+        },
+        {
+            "id": 3,
+            "name": "Shelf 3",
+            "location": "Book Cabinet",
+            "level": 3
+        },
+        {
+            "id": 4,
+            "name": "Shelf 4",
+            "location": "Book Cabinet",
+            "level": 4
+        }
+    ],
+    "loans": [
+        {
+            "id": 1,
+            "book_id": 2,
+            "borrower": "isti",
+            "loan_date": "2026-10-07",
+            "due_date": "",
+            "return_date": "2026-10-07",
+            "status": "Returned",
+            "notes": ""
+        },
+        {
+            "id": 2,
+            "book_id": 4,
+            "borrower": "রাকিব",
+            "loan_date": "2026-09-25",
+            "due_date": "2026-10-10",
+            "return_date": "",
+            "status": "Borrowed",
+            "notes": ""
+        },
+        {
+            "id": 3,
+            "book_id": 1,
+            "borrower": "সুমাইয়া",
+            "loan_date": "2026-09-15",
+            "due_date": "2026-09-30",
+            "return_date": "2026-09-28",
+            "status": "Returned",
+            "notes": ""
+        },
+        {
+            "id": 4,
+            "book_id": 3,
+            "borrower": "তানভীর",
+            "loan_date": "2026-10-01",
+            "due_date": "2026-10-15",
+            "return_date": "",
+            "status": "Borrowed",
+            "notes": ""
+        },
+        {
+            "id": 5,
+            "book_id": 5,
+            "borrower": "নাঈম",
+            "loan_date": "2026-08-10",
+            "due_date": "2026-08-25",
+            "return_date": "2026-08-24",
+            "status": "Returned",
+            "notes": ""
+        }
+    ]
+}
