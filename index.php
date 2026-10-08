@@ -184,6 +184,30 @@ foreach($d['tags'] as $t){
 }
 usort($tagUsage,function($a,$b){ return ($b['count']<=>$a['count']) ?: strnatcasecmp($a['name'],$b['name']); });
 $topTags=array_slice($tagUsage,0,6);
+$page=(int)($_GET['page']??1); if($page<1)$page=1;
+function paginate(array $rows,int $page,int $per): array {
+    $total=count($rows); $pages=max(1,(int)ceil($total/$per));
+    if($page>$pages)$page=$pages;
+    return [array_slice($rows,($page-1)*$per,$per),$total,$pages,$page];
+}
+function pager(int $page,int $pages,string $section): string {
+    if($pages<=1) return '';
+    $get=array_filter($_GET,function($v){ return $v!==''; });
+    $get['section']=$section;
+    $mk=function(int $n) use ($get){ $g=$get; $g['page']=$n; return 'index.php?'.http_build_query($g); };
+    $out='<nav aria-label="Page navigation"><ul class="pagination pagination-sm justify-content-center mt-3 mb-0">';
+    $out.='<li class="page-item'.($page<=1?' disabled':'').'"><a class="page-link" href="'.h($mk($page-1)).'">&laquo;</a></li>';
+    $from=max(1,$page-2); $to=min($pages,$page+2);
+    if($from>1){ $out.='<li class="page-item"><a class="page-link" href="'.h($mk(1)).'">1</a></li>'; if($from>2)$out.='<li class="page-item disabled"><span class="page-link">…</span></li>'; }
+    for($i=$from;$i<=$to;$i++){ $out.='<li class="page-item'.($i===$page?' active':'').'"><a class="page-link" href="'.h($mk($i)).'">'.$i.'</a></li>'; }
+    if($to<$pages){ if($to<$pages-1)$out.='<li class="page-item disabled"><span class="page-link">…</span></li>'; $out.='<li class="page-item"><a class="page-link" href="'.h($mk($pages)).'">'.$pages.'</a></li>'; }
+    $out.='<li class="page-item'.($page>=$pages?' disabled':'').'"><a class="page-link" href="'.h($mk($page+1)).'">&raquo;</a></li></ul></nav>';
+    return $out;
+}
+list($pageBooks,$bookTotal,$bookPages)=paginate($books,$page,10);
+list($pageTags,$tagTotal,$tagPages)=paginate($tags,$page,20);
+list($pageShelves,$shelfTotal,$shelfPages)=paginate($d['shelves'],$page,20);
+list($pageLoans,$loanTotal,$loanPages)=paginate(array_reverse($d['loans']),$page,10);
 $subtitles=[
     'dashboard'=>'A quick overview of your collection',
     'books'=>'Find, add and manage your books',
@@ -390,7 +414,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Book</th><th class="d-none d-md-table-cell">ISBN</th><th class="d-none d-lg-table-cell">Shelf</th><th>Tags</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
       <tbody>
-      <?php foreach($books as$b):$sh=row_by_id($d['shelves'],(int)($b['shelf_id']??0));?>
+      <?php foreach($pageBooks as$b):$sh=row_by_id($d['shelves'],(int)($b['shelf_id']??0));?>
         <tr>
           <td>
             <div class="d-flex align-items-center gap-3">
@@ -414,11 +438,12 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
           </td>
         </tr>
       <?php endforeach;?>
-      <?php if(!$books):?>
+      <?php if(!$bookTotal):?>
         <tr><td colspan="6"><div class="empty"><i class="bi bi-search"></i><h6>No books found</h6><p class="mb-3">Try a different search or add a new book.</p><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bookModal"><i class="bi bi-plus-lg me-1"></i>Add Book</button></div></td></tr>
       <?php endif;?>
       </tbody>
     </table></div>
+    <?=pager($page,$bookPages,'books')?>
   </div>
 
 <?php elseif($section==='tags'):?>
@@ -433,7 +458,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Tag</th><th>Books</th><th class="text-end">Actions</th></tr></thead>
       <tbody>
-      <?php foreach($tags as$t):$use=count(array_filter($d['books'],function($b) use ($t){ return in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true); }));?>
+      <?php foreach($pageTags as$t):$use=count(array_filter($d['books'],function($b) use ($t){ return in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true); }));?>
         <tr>
           <td><span class="badge bg-primary-subtle text-primary-emphasis">#<?=$t['id']?> · <?=h($t['name'])?></span></td>
           <td><?=$use?> book(s)</td>
@@ -446,11 +471,12 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
           </td>
         </tr>
       <?php endforeach;?>
-      <?php if(!$tags):?>
+      <?php if(!$tagTotal):?>
         <tr><td colspan="3"><div class="empty"><i class="bi bi-bookmark"></i><h6>No tags found</h6><p class="mb-3">Create tags to categorize your books.</p><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#tagModal"><i class="bi bi-plus-lg me-1"></i>Add Tag</button></div></td></tr>
       <?php endif;?>
       </tbody>
     </table></div>
+    <?=pager($page,$tagPages,'tags')?>
   </div>
 
 <?php elseif($section==='shelves'):?>
@@ -458,7 +484,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Shelf</th><th>Location</th><th>Books</th><th class="text-end">Actions</th></tr></thead>
       <tbody>
-      <?php foreach($d['shelves']as$s):$use=count(array_filter($d['books'],function($b) use ($s){ return (int)($b['shelf_id']??0)===(int)$s['id']; }));?>
+      <?php foreach($pageShelves as$s):$use=count(array_filter($d['books'],function($b) use ($s){ return (int)($b['shelf_id']??0)===(int)$s['id']; }));?>
         <tr>
           <td><div class="d-flex align-items-center gap-2"><span class="badge bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center rounded-circle" style="width:38px;height:38px;font-size:1rem"><i class="bi bi-archive"></i></span><span class="fw-semibold"><?=h($s['name'])?></span></div></td>
           <td class="text-muted"><?=h($s['location'])?:'—'?></td>
@@ -472,11 +498,12 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
           </td>
         </tr>
       <?php endforeach;?>
-      <?php if(!$d['shelves']):?>
+      <?php if(!$shelfTotal):?>
         <tr><td colspan="4"><div class="empty"><i class="bi bi-archive"></i><h6>No shelves yet</h6><p class="mb-3">Create shelves to organize where your books live.</p><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#shelfModal"><i class="bi bi-plus-lg me-1"></i>Add Shelf</button></div></td></tr>
       <?php endif;?>
       </tbody>
     </table></div>
+    <?=pager($page,$shelfPages,'shelves')?>
   </div>
 
 <?php else:?>
@@ -484,7 +511,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Book</th><th>Borrower</th><th>Loan Date</th><th>Due Date</th><th>Status</th><th class="text-end">Action</th></tr></thead>
       <tbody>
-      <?php foreach(array_reverse($d['loans'])as$l):$b=row_by_id($d['books'],(int)$l['book_id']);$ls=loan_status($l);?>
+      <?php foreach($pageLoans as$l):$b=row_by_id($d['books'],(int)$l['book_id']);$ls=loan_status($l);?>
         <tr class="<?=$ls==='Overdue'?'table-danger':''?>">
           <td class="fw-semibold"><?=h($b['title']??'Deleted book')?></td>
           <td><?=h($l['borrower'])?></td>
@@ -499,11 +526,12 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
           <?php else:?><span class="muted">Returned <?=h($l['return_date'])?></span><?php endif;?></td>
         </tr>
       <?php endforeach;?>
-      <?php if(!$d['loans']):?>
+      <?php if(!$loanTotal):?>
         <tr><td colspan="6"><div class="empty"><i class="bi bi-arrow-left-right"></i><h6>No loans yet</h6><p class="mb-3">Lend a book and it will show up here.</p><button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#loanModal"><i class="bi bi-plus-lg me-1"></i>Lend Book</button></div></td></tr>
       <?php endif;?>
       </tbody>
     </table></div>
+    <?=pager($page,$loanPages,'lending')?>
   </div>
 <?php endif;?>
   </main>
