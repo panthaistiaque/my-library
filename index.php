@@ -28,13 +28,13 @@ function flash(string $type,string $msg): void { $_SESSION['flash']=['type'=>$ty
 
 function status_badge(string $s): string {
     $map=[
-        'Available'=>'bg-success-subtle text-success',
-        'Lent'=>'bg-warning-subtle text-warning',
-        'Borrowed'=>'bg-warning-subtle text-warning',
-        'Reading'=>'bg-info-subtle text-info',
-        'Wishlist'=>'bg-purple-subtle text-purple',
-        'Returned'=>'bg-success-subtle text-success',
-        'Overdue'=>'bg-danger-subtle text-danger',
+        'Available'=>'bg-success-subtle text-success-emphasis',
+        'Lent'=>'bg-warning-subtle text-warning-emphasis',
+        'Borrowed'=>'bg-warning-subtle text-warning-emphasis',
+        'Reading'=>'bg-info-subtle text-info-emphasis',
+        'Wishlist'=>'bg-primary-subtle text-primary-emphasis',
+        'Returned'=>'bg-success-subtle text-success-emphasis',
+        'Overdue'=>'bg-danger-subtle text-danger-emphasis',
     ];
     return '<span class="badge '.($map[$s]??'bg-secondary-subtle text-secondary').'">'.h($s).'</span>';
 }
@@ -199,300 +199,69 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234f46e5'/><rect x='7' y='8' width='8' height='17' rx='2' fill='white'/><rect x='17' y='8' width='8' height='17' rx='2' fill='white' opacity='.7'/></svg>">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
-	:root{
-		--brand:#6366f1;
-		--brand-dark:#4f46e5;
-		--brand2:#a855f7;
-		--accent:#06b6d4;
-		--ink:#0b1220;
-		--muted:#6b7488;
-		--line:#e9ecf5;
-		--bg:#f5f6fc;
-		--card:#ffffff;
-		--shadow-sm: 0 1px 2px rgba(15,23,42,.05);
-		--shadow-md: 0 10px 30px -12px rgba(15,23,42,.12);
-		--shadow-lg: 0 24px 60px -20px rgba(15,23,42,.18);
-	}
-	*{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-	body{
-		background:
-			radial-gradient(1200px 600px at 100% -10%, rgba(168,85,247,.10), transparent 60%),
-			radial-gradient(900px 500px at -10% 10%, rgba(99,102,241,.10), transparent 60%),
-			var(--bg);
-		color:var(--ink);
-		font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
-		font-size:14.5px;
-		min-height:100vh;
-	}
-	.serif{ font-family:'Fraunces', Georgia, serif; letter-spacing:-.01em; }
-
-	/* ---------- Top bar ---------- */
-	.topbar{
-		background:rgba(255,255,255,.85);
-		backdrop-filter: saturate(180%) blur(14px);
-		-webkit-backdrop-filter: saturate(180%) blur(14px);
-		border-bottom:1px solid var(--line);
-		position:sticky; top:0; z-index:1030;
-	}
-	.topbar .brand-text{ font-weight:800; letter-spacing:-.01em; }
-
-	/* ---------- Sidebar ---------- */
-	.sidebar{
-		background:
-			radial-gradient(600px 300px at 20% -10%, rgba(99,102,241,.35), transparent 60%),
-			radial-gradient(500px 300px at 100% 100%, rgba(168,85,247,.25), transparent 60%),
-			linear-gradient(180deg,#10162b 0%,#0a0f22 100%);
-		width:268px;
-		padding:22px 16px!important;
-	}
-	.sidebar .brand{
-		display:flex; align-items:center; gap:12px;
-		color:#fff; font-weight:800; font-size:19px;
-		letter-spacing:-.01em; margin:2px 6px 22px;
-	}
-	.brand-mark{
-		width:40px; height:40px; border-radius:13px;
-		background:linear-gradient(135deg,var(--brand),var(--brand2));
-		display:grid; place-items:center; color:#fff;
-		font-size:19px; flex:0 0 auto;
-		box-shadow:0 8px 24px -8px rgba(99,102,241,.6), inset 0 0 0 1px rgba(255,255,255,.15);
-	}
-	.sidebar .nav-label{
-		font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-		color:#647093; margin:18px 0 8px 12px; font-weight:700;
-	}
-	.sidebar a{
-		display:flex; align-items:center; gap:12px;
-		color:#a9b3cc; padding:11px 14px; border-radius:12px;
-		margin:3px 0; text-decoration:none; font-weight:600;
-		font-size:14px; position:relative;
-		transition:background .18s, color .18s, transform .18s;
-	}
-	.sidebar a i{ width:18px; text-align:center; font-size:16px; }
-	.sidebar a:hover{ background:rgba(255,255,255,.06); color:#fff; transform:translateX(2px); }
-	.sidebar a.active{
-		background:linear-gradient(90deg,rgba(99,102,241,.45),rgba(99,102,241,.06));
-		color:#fff;
-		box-shadow:inset 0 0 0 1px rgba(148,163,255,.28), 0 8px 24px -14px rgba(99,102,241,.9);
-	}
-	.sidebar a.active::before{
-		content:""; position:absolute; left:-16px; top:50%; transform:translateY(-50%);
-		width:3px; height:22px; border-radius:3px;
-		background:linear-gradient(180deg,var(--brand),var(--brand2));
-	}
-	.sidebar .side-foot{
-		color:#5d6b8a; font-size:12px; margin-top:auto;
-		padding:16px 12px 0; border-top:1px solid rgba(255,255,255,.07);
-	}
-
-	@media(min-width:992px){
-		.sidebar{ position:sticky; top:0; min-height:100vh; transform:none!important; visibility:visible!important; }
+	@media (min-width:992px){
+		.sidebar{ position:sticky; top:0; width:268px; height:100vh; transform:none!important; visibility:visible!important; }
 		main{ min-height:100vh; }
 	}
-
-	/* ---------- Cards ---------- */
-	.card{
-		background:var(--card);
-		border:1px solid rgba(15,23,42,.04);
-		border-radius:18px;
-		box-shadow:var(--shadow-md);
-		transition:box-shadow .25s ease, transform .25s ease;
-	}
-	.card-hover:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); }
-	.tag-stat{ color:var(--ink); text-decoration:none; }
-	.tag-stat .tag-arrow{ transition:transform .2s ease, color .2s ease; }
-	.tag-stat:hover .tag-arrow{ transform:translate(2px,-2px); color:var(--brand); }
-	.card-header{
-		background:transparent; border:0; font-weight:700;
-		font-size:16px; padding:0 0 14px;
-	}
-
-	/* ---------- Typography ---------- */
-	.page-title{ font-weight:800; letter-spacing:-.025em; }
-	.page-subtitle{ color:var(--muted); font-size:13.5px; }
-	.muted{ color:var(--muted); font-size:13px; }
-
-	/* ---------- Stats ---------- */
-	.stat{ font-size:32px; font-weight:800; letter-spacing:-.03em; line-height:1.05; }
-	.stat-icon{
-		width:48px; height:48px; border-radius:14px;
-		display:grid; place-items:center; font-size:22px;
-		box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);
-	}
-	.i-indigo{ background:rgba(99,102,241,.14); color:#4f46e5; }
-	.i-cyan{ background:rgba(6,182,212,.14); color:#0891b2; }
-	.i-amber{ background:rgba(217,119,6,.16); color:#d97706; }
-	.i-rose{ background:rgba(225,29,72,.12); color:#e11d48; }
-
-	/* ---------- Buttons ---------- */
-	.btn{ border-radius:11px; font-weight:600; padding:.55rem 1rem; transition:all .18s ease; }
-	.btn-sm{ padding:.34rem .68rem; font-size:13px; border-radius:9px; }
-	.btn-primary{
-		background:linear-gradient(135deg,var(--brand),var(--brand-dark));
-		border:0;
-		box-shadow:0 10px 22px -10px rgba(99,102,241,.65);
-	}
-	.btn-primary:hover,.btn-primary:focus{
-		background:linear-gradient(135deg,var(--brand-dark),#4338ca);
-		transform:translateY(-1px);
-		box-shadow:0 14px 26px -10px rgba(99,102,241,.75);
-	}
-	.btn-dark{ background:#0b1220; border-color:#0b1220; }
-	.btn-dark:hover{ background:#000; }
-
-	/* ---------- Forms ---------- */
-	.form-control,.form-select{
-		border-radius:11px; border-color:#e2e7f1;
-		padding:.62rem .9rem; background:#fbfcff;
-		transition:border-color .18s, box-shadow .18s, background .18s;
-	}
-	.form-control:hover,.form-select:hover{ border-color:#cdd5e6; }
-	.form-control:focus,.form-select:focus{
-		background:#fff;
-		border-color:#a5b4fc;
-		box-shadow:0 0 0 .18rem rgba(99,102,241,.16);
-	}
-	.form-label{ font-size:12.5px; font-weight:700; color:#55607a; margin-bottom:6px; letter-spacing:.01em; }
-	.section-label{
-		font-size:11.5px; font-weight:800; letter-spacing:.12em;
-		text-transform:uppercase; color:#94a0b8;
-		border-bottom:1px dashed var(--line);
-		padding-bottom:8px; margin-top:4px;
-	}
+	.sidebar{ width:268px; background-color:#10162b !important; }
+	.sidebar .offcanvas-body{ flex-grow:1; }
+	.brand-mark{ display:grid; place-items:center; width:40px; height:40px; border-radius:.7rem; background:var(--bs-primary); color:#fff; font-size:1.1rem; flex:0 0 auto; }
+	.sidebar .nav-pills .nav-link,
+	.sidebar .nav-pills .nav-link:focus,
+	.sidebar .nav-pills .nav-link:hover{ color:#a9b3cc; border-radius:.75rem; }
+	.sidebar .nav-pills .nav-link.active{ background-color:var(--bs-primary); color:#fff; }
+	.cover{ display:grid; place-items:center; width:44px; height:60px; border-radius:.5rem; background:var(--bs-tertiary-bg); border:1px solid var(--bs-border-color); color:var(--bs-secondary-color); overflow:hidden; font-size:1.05rem; }
+	.cover img{ width:100%; height:100%; object-fit:cover; }
 	.input-icon{ position:relative; }
-	.input-icon>i{
-		position:absolute; left:14px; top:50%; transform:translateY(-50%);
-		color:#9aa4bd; pointer-events:none;
-	}
-	.input-icon>.form-control{ padding-left:40px; }
-
-	/* ---------- Tables ---------- */
-	.table{ --bs-table-bg:transparent; }
-	.table thead th{
-		font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
-		color:#8a93a9; font-weight:700; background:#f8f9fd;
-		border-bottom:1px solid var(--line); padding:.75rem .8rem;
-	}
-	.table td{ vertical-align:middle; padding:.85rem .8rem; border-color:#eef1f8; }
-	.table tbody tr{ transition:background .15s; }
-	.table tbody tr:hover{ background:#fafbff; }
-	.table tbody tr:last-child td{ border-bottom:0; }
-
-	/* ---------- Cover ---------- */
-	.cover{
-		width:44px; height:60px; border-radius:9px; object-fit:cover;
-		background:linear-gradient(180deg,#eef1f8,#e2e7f3);
-		border:1px solid var(--line);
-		display:grid; place-items:center; color:#9aa4bd;
-		flex:0 0 auto; overflow:hidden; font-size:18px;
-		box-shadow:inset 0 -8px 14px -10px rgba(15,23,42,.25);
-	}
-
-	/* ---------- Badges ---------- */
-	.badge{
-		font-weight:600; font-size:12px; padding:.45em .85em;
-		border-radius:999px; letter-spacing:.01em;
-	}
-	.text-purple{ color:#7c3aed!important; }
-	.bg-purple-subtle{ background:rgba(124,58,237,.12)!important; }
-	.text-warning{ color:#b45309!important; }
-	.bg-warning-subtle{ background:rgba(217,119,6,.14)!important; }
-
-	/* ---------- Modals ---------- */
-	.modal-content{
-		border:0; border-radius:22px;
-		box-shadow:0 30px 70px -20px rgba(2,6,23,.35);
-		overflow:hidden;
-	}
-	.modal-header,.modal-footer{ border-color:#eef1f8; padding:1rem 1.4rem; }
-	.modal-title{ font-weight:700; }
-	.modal-dialog{ max-height:94vh; }
-	.modal-body{ overflow-y:auto; max-height:calc(94vh - 140px); padding:1.4rem; }
-
-	/* ---------- Tag picker ---------- */
-	.tag-scroll{
-		max-height:180px; overflow-y:auto;
-		border:1px dashed var(--line)!important;
-		border-radius:12px!important; background:#fafbfe;
-	}
-	.tag-scroll label{ font-size:14px; }
-
-	/* ---------- Empty state ---------- */
-	.empty{ text-align:center; padding:50px 20px; color:var(--muted); }
-	.empty i{ font-size:44px; color:#c6cde0; display:block; margin-bottom:14px; }
-	.empty h6{ font-weight:700; color:#475069; margin-bottom:6px; }
-
-	/* ---------- Alerts ---------- */
-	.alert{
-		border:0; border-radius:14px; font-weight:600;
-		box-shadow:0 10px 30px -14px rgba(15,23,42,.18);
-	}
-
-	/* ---------- Loan list ---------- */
-	.list-loan{
-		display:flex; justify-content:space-between; align-items:center;
-		gap:12px; padding:14px 0; border-bottom:1px dashed var(--line);
-	}
+	.input-icon>i{ position:absolute; left:.8rem; top:50%; transform:translateY(-50%); color:var(--bs-secondary-color); pointer-events:none; }
+	.input-icon>.form-control{ padding-left:2.4rem; }
+	.section-label{ font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--bs-secondary-color); border-bottom:1px dashed var(--bs-border-color); padding-bottom:.5rem; margin-top:.25rem; }
+	.tag-scroll{ max-height:180px; overflow-y:auto; border:1px dashed var(--bs-border-color); border-radius:.75rem; background:var(--bs-tertiary-bg); }
+	.tag-scroll label{ font-size:.9rem; }
+	.list-loan{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; padding:.9rem 0; border-bottom:1px dashed var(--bs-border-color); }
 	.list-loan:last-child{ border-bottom:0; }
-
-	.filters-card{ background:linear-gradient(135deg,#fff 0%,#fbfcff 100%); }
-
-	.section-link{
-		color:var(--brand-dark); text-decoration:none; font-weight:600;
-		font-size:13px; transition:color .15s;
-	}
-	.section-link:hover{ color:var(--brand2); }
-
-	/* ---------- Animations ---------- */
-	@keyframes fadeUp{
-		from{ opacity:0; transform:translateY(8px); }
-		to{ opacity:1; transform:translateY(0); }
-	}
+	.muted{ color:var(--bs-secondary-color); font-size:.85rem; }
+	.tag-stat{ color:inherit; text-decoration:none; }
+	.min-w-0{ min-width:0; }
+	.empty{ text-align:center; padding:3rem 1.25rem; }
+	.empty i{ font-size:2.6rem; color:var(--bs-secondary-color); opacity:.5; display:block; margin-bottom:.75rem; }
+	.empty h6{ font-weight:600; }
+	@keyframes fadeUp{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
 	.fade-up{ animation:fadeUp .35s ease both; }
-	.fade-up-1{ animation-delay:.03s; }
-	.fade-up-2{ animation-delay:.08s; }
-	.fade-up-3{ animation-delay:.13s; }
-	.fade-up-4{ animation-delay:.18s; }
-
-	/* Nicer scrollbars */
-	::-webkit-scrollbar{ width:10px; height:10px; }
-	::-webkit-scrollbar-thumb{ background:#d4dae9; border-radius:20px; border:3px solid transparent; background-clip:content-box; }
-	::-webkit-scrollbar-thumb:hover{ background:#b8c1d8; background-clip:content-box; border:3px solid transparent; }
+	.fade-up-1{ animation-delay:.03s; } .fade-up-2{ animation-delay:.08s; } .fade-up-3{ animation-delay:.13s; } .fade-up-4{ animation-delay:.18s; }
 </style>
 </head><body>
 <div class="d-flex">
 <aside id="sidebar" class="sidebar offcanvas offcanvas-lg" tabindex="-1" aria-label="Main navigation">
   <div class="offcanvas-header d-lg-none border-bottom border-secondary-subtle mb-2">
-    <span class="brand mb-0"><span class="brand-mark"><i class="bi bi-book-half"></i></span>My Library</span>
+    <span class="fw-bold fs-5 text-white d-flex align-items-center gap-2 mb-0"><span class="brand-mark"><i class="bi bi-book-half"></i></span>My Library</span>
     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body d-flex flex-column p-0">
-    <div class="brand d-none d-lg-flex"><span class="brand-mark"><i class="bi bi-book-half"></i></span>My Library</div>
-    <div class="nav-label">Menu</div>
-    <a class="<?=$section==='dashboard'?'active':''?>" href="?section=dashboard"><i class="bi bi-grid-1x2"></i>Dashboard</a>
-    <a class="<?=$section==='books'?'active':''?>" href="?section=books"><i class="bi bi-book"></i>Books</a>
-    <a class="<?=$section==='tags'?'active':''?>" href="?section=tags"><i class="bi bi-bookmark"></i>Tags</a>
-    <a class="<?=$section==='shelves'?'active':''?>" href="?section=shelves"><i class="bi bi-archive"></i>Shelves</a>
-    <a class="<?=$section==='lending'?'active':''?>" href="?section=lending"><i class="bi bi-arrow-left-right"></i>Lending</a>
-    <div class="side-foot mt-auto"><i class="bi bi-database me-1"></i>Stored safely in JSON — no MySQL needed</div>
+    <div class="fw-bold fs-5 text-white d-flex align-items-center gap-2 px-3 pt-2 pb-3 d-none d-lg-flex"><span class="brand-mark"><i class="bi bi-book-half"></i></span>My Library</div>
+    <div class="small text-uppercase fw-semibold text-secondary px-3 pb-2">Menu</div>
+    <nav class="nav nav-pills flex-column px-3">
+      <a class="nav-link <?=$section==='dashboard'?'active':''?>" href="?section=dashboard"><i class="bi bi-grid-1x2 me-2"></i>Dashboard</a>
+      <a class="nav-link <?=$section==='books'?'active':''?>" href="?section=books"><i class="bi bi-book me-2"></i>Books</a>
+      <a class="nav-link <?=$section==='tags'?'active':''?>" href="?section=tags"><i class="bi bi-bookmark me-2"></i>Tags</a>
+      <a class="nav-link <?=$section==='shelves'?'active':''?>" href="?section=shelves"><i class="bi bi-archive me-2"></i>Shelves</a>
+      <a class="nav-link <?=$section==='lending'?'active':''?>" href="?section=lending"><i class="bi bi-arrow-left-right me-2"></i>Lending</a>
+    </nav>
+    <div class="small text-secondary border-top border-secondary-subtle p-3 mt-auto"><i class="bi bi-database me-1"></i>Stored safely in JSON</div>
   </div>
 </aside>
 
 <div class="flex-grow-1 min-vw-0 d-flex flex-column">
-  <nav class="topbar d-lg-none px-3 py-2 d-flex align-items-center gap-2">
-    <button class="btn btn-light btn-sm px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-label="Open menu"><i class="bi bi-list fs-5"></i></button>
-    <span class="brand-text fs-5">My Library</span>
+  <nav class="topbar d-lg-none px-3 py-2 d-flex align-items-center gap-2 bg-white position-sticky top-0 z-3 shadow-sm">
+    <button class="btn btn-outline-secondary btn-sm px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-label="Open menu"><i class="bi bi-list fs-5"></i></button>
+    <span class="fw-bold fs-5">My Library</span>
   </nav>
 
   <main class="p-4 flex-grow-1">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 fade-up">
     <div>
-      <h2 class="page-title serif mb-1"><?=h(ucfirst($section))?></h2>
-      <div class="page-subtitle"><?=h($subtitles[$section]??'')?></div>
+      <h2 class="fw-bold mb-1"><?=h(ucfirst($section))?></h2>
     </div>
     <div class="d-flex gap-2">
       <?php if($section==='books'):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookModal"><i class="bi bi-plus-lg me-1"></i>Add Book</button><?php endif;?>
@@ -513,15 +282,15 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 <?php if($section==='dashboard'):?>
   <div class="row g-3 mb-4">
     <?php foreach([
-      ['Books',count($d['books']),'bi-book','i-indigo'],
-      ['Tags',count($d['tags']),'bi-bookmark','i-cyan'],
-      ['Shelves',count($d['shelves']),'bi-archive','i-amber'],
-      ['On Loan',$lentCount,'bi-send','i-rose'],
+      ['Books',count($d['books']),'bi-book','bg-primary-subtle text-primary'],
+      ['Tags',count($d['tags']),'bi-bookmark','bg-info-subtle text-info'],
+      ['Shelves',count($d['shelves']),'bi-archive','bg-warning-subtle text-warning-emphasis'],
+      ['On Loan',$lentCount,'bi-send','bg-danger-subtle text-danger'],
     ] as $i=>$x):?>
-    <div class="col-sm-6 col-xl-3 fade-up fade-up-<?=$i+1?>"><div class="card card-hover p-4 h-100">
+    <div class="col-sm-6 col-xl-3 fade-up fade-up-<?=$i+1?>"><div class="card p-4 h-100 shadow-sm">
       <div class="d-flex justify-content-between align-items-start">
-        <div><div class="muted mb-2"><?=$x[0]?></div><div class="stat"><?=$x[1]?></div></div>
-        <div class="stat-icon <?=$x[3]?>"><i class="bi <?=$x[2]?>"></i></div>
+        <div><div class="text-secondary small fw-semibold mb-2"><?=$x[0]?></div><div class="display-6 fw-bold"><?=$x[1]?></div></div>
+        <div class="<?=$x[3]?> rounded-3 d-flex align-items-center justify-content-center" style="width:48px;height:48px;font-size:1.3rem"><i class="bi <?=$x[2]?>"></i></div>
       </div>
     </div></div>
     <?php endforeach;?>
@@ -529,15 +298,12 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 
   <?php if($topTags):?>
   <div class="row g-3 mb-4">
-    <div class="col-12 d-flex align-items-baseline gap-2">
-      <span class="muted">Tap a tag to open its filtered book list</span>
-    </div>
     <?php foreach($topTags as $i=>$t):?>
     <div class="col-6 col-md-4 col-xl-2 fade-up fade-up-<?=($i%4)+1?>">
-      <a class="card card-hover p-3 h-100 tag-stat d-block" href="?section=books&tag=<?=$t['id']?>" title="Show books tagged <?=h($t['name'])?>">
+      <a class="card p-3 h-100 text-decoration-none tag-stat" href="?section=books&tag=<?=$t['id']?>" title="Show books tagged <?=h($t['name'])?>">
         <div class="d-flex align-items-center justify-content-between">
-          <span class="badge bg-purple-subtle text-purple"><i class="bi bi-bookmark me-1"></i><?=$t['count']?> book(s)</span>
-          <i class="bi bi-box-arrow-up-right tag-arrow muted"></i>
+          <span class="badge bg-primary-subtle text-primary-emphasis"><i class="bi bi-bookmark me-1"></i><?=$t['count']?> book(s)</span>
+          <i class="bi bi-box-arrow-up-right text-secondary"></i>
         </div>
         <div class="fw-bold text-truncate mt-2"><?=h($t['name'])?></div>
       </a>
@@ -558,8 +324,8 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <div class="col-lg-7 fade-up fade-up-2">
       <div class="card p-4 h-100">
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="fw-bold mb-0 serif">Recently Added</h5>
-          <a class="section-link" href="?section=books">View all <i class="bi bi-arrow-right"></i></a>
+          <h5 class="fw-bold mb-0">Recently Added</h5>
+          <a class="link-primary text-decoration-none fw-semibold" href="?section=books">View all <i class="bi bi-arrow-right"></i></a>
         </div>
         <?php $recent=array_slice(array_reverse($d['books']),0,5);?>
         <?php if(!$recent):?>
@@ -577,8 +343,8 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <div class="col-lg-5 fade-up fade-up-3">
       <div class="card p-4 h-100">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <h5 class="fw-bold mb-0 serif">Active Loans</h5>
-          <a class="section-link" href="?section=lending">Manage <i class="bi bi-arrow-right"></i></a>
+          <h5 class="fw-bold mb-0">Active Loans</h5>
+          <a class="link-primary text-decoration-none fw-semibold" href="?section=lending">Manage <i class="bi bi-arrow-right"></i></a>
         </div>
         <?php if(!$activeLoans):?>
           <div class="empty"><i class="bi bi-check2-circle"></i><h6>Nothing on loan</h6><p class="mb-0">All your books are on the shelf.</p></div>
@@ -596,7 +362,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </div>
 
 <?php elseif($section==='books'):?>
-  <div class="card p-3 mb-4 filters-card fade-up">
+  <div class="card p-3 mb-4 fade-up">
     <form class="row g-2 align-items-end">
       <input type="hidden" name="section" value="books">
       <div class="col-lg-5 col-md-6">
@@ -669,7 +435,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
       <tbody>
       <?php foreach($tags as$t):$use=count(array_filter($d['books'],function($b) use ($t){ return in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true); }));?>
         <tr>
-          <td><span class="badge bg-purple-subtle text-purple">#<?=$t['id']?> · <?=h($t['name'])?></span></td>
+          <td><span class="badge bg-primary-subtle text-primary-emphasis">#<?=$t['id']?> · <?=h($t['name'])?></span></td>
           <td><?=$use?> book(s)</td>
           <td class="text-end text-nowrap">
             <a class="btn btn-sm btn-outline-primary" href="?section=tags&edit_tag=<?=$t['id']?>"><i class="bi bi-pencil"></i></a>
@@ -694,7 +460,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
       <tbody>
       <?php foreach($d['shelves']as$s):$use=count(array_filter($d['books'],function($b) use ($s){ return (int)($b['shelf_id']??0)===(int)$s['id']; }));?>
         <tr>
-          <td><div class="d-flex align-items-center gap-2"><span class="stat-icon i-amber" style="width:38px;height:38px;font-size:16px"><i class="bi bi-archive"></i></span><span class="fw-semibold"><?=h($s['name'])?></span></div></td>
+          <td><div class="d-flex align-items-center gap-2"><span class="badge bg-warning-subtle text-warning-emphasis d-flex align-items-center justify-content-center rounded-circle" style="width:38px;height:38px;font-size:1rem"><i class="bi bi-archive"></i></span><span class="fw-semibold"><?=h($s['name'])?></span></div></td>
           <td class="text-muted"><?=h($s['location'])?:'—'?></td>
           <td><span class="badge bg-light text-secondary border"><?=$use?> book(s)</span></td>
           <td class="text-end text-nowrap">

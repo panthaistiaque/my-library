@@ -88,7 +88,7 @@
             "edition": "3rd",
             "language": "বাংলা",
             "shelf_id": 3,
-            "status": "Lent",
+            "status": "Available",
             "cover_url": "",
             "purchase_date": "",
             "purchase_price": "320",
@@ -125,29 +125,6 @@
             ],
             "updated_at": "2026-10-07 12:25:02",
             "created_at": "2026-10-07 12:25:02"
-        },
-        {
-            "id": 6,
-            "title": "rrr",
-            "author": "জহির রায়হান",
-            "isbn": "",
-            "publisher": "বাংলা একাডেমি",
-            "publication_year": "",
-            "edition": "",
-            "language": "বাংলা",
-            "shelf_id": 2,
-            "status": "Available",
-            "cover_url": "",
-            "purchase_date": "",
-            "purchase_price": "",
-            "notes": "",
-            "tag_ids": [
-                17,
-                25,
-                26
-            ],
-            "updated_at": "2026-10-08 04:48:36",
-            "created_at": "2026-10-08 04:48:36"
         }
     ],
     "tags": [
@@ -315,8 +292,8 @@
             "borrower": "রাকিব",
             "loan_date": "2026-09-25",
             "due_date": "2026-10-10",
-            "return_date": "",
-            "status": "Borrowed",
+            "return_date": "2026-10-08",
+            "status": "Returned",
             "notes": ""
         },
         {
