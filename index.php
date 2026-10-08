@@ -20,10 +20,10 @@ function next_id(array &$d,string $type): int {
     $id=(int)($d['meta']['next_ids'][$type]??1); $d['meta']['next_ids'][$type]=$id+1; return $id;
 }
 function h($v): string { return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8'); }
-function row_by_id(array $rows,int $id): ?array {
+function row_by_id(array $rows,int $id) {
     foreach($rows as $r) if((int)$r['id']===$id) return $r; return null;
 }
-function go(string $s): never { header('Location: index.php?section='.$s); exit; }
+function go(string $s) { header('Location: index.php?section='.$s); exit; }
 function flash(string $type,string $msg): void { $_SESSION['flash']=['type'=>$type,'msg'=>$msg]; }
 
 function status_badge(string $s): string {
@@ -89,8 +89,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 
     if($a==='delete_book'){
         $id=(int)$_POST['book_id'];
-        $d['books']=array_values(array_filter($d['books'],fn($x)=>(int)$x['id']!==$id));
-        $d['loans']=array_values(array_filter($d['loans'],fn($x)=>(int)$x['book_id']!==$id));
+        $d['books']=array_values(array_filter($d['books'],function($x) use ($id){ return (int)$x['id']!==$id; }));
+        $d['loans']=array_values(array_filter($d['loans'],function($x) use ($id){ return (int)$x['book_id']!==$id; }));
         db_save($dataFile,$d); flash('success','Book deleted.'); go('books');
     }
 
@@ -106,8 +106,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         } go('tags');
     }
     if($a==='delete_tag'){
-        $id=(int)$_POST['tag_id']; $d['tags']=array_values(array_filter($d['tags'],fn($x)=>(int)$x['id']!==$id));
-        foreach($d['books'] as &$b)$b['tag_ids']=array_values(array_filter($b['tag_ids']??[],fn($x)=>(int)$x!==$id));
+        $id=(int)$_POST['tag_id']; $d['tags']=array_values(array_filter($d['tags'],function($x) use ($id){ return (int)$x['id']!==$id; }));
+        foreach($d['books'] as &$b)$b['tag_ids']=array_values(array_filter($b['tag_ids']??[],function($x) use ($id){ return (int)$x!==$id; }));
         unset($b); db_save($dataFile,$d); flash('success','Tag deleted.'); go('tags');
     }
 
@@ -121,7 +121,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         } go('shelves');
     }
     if($a==='delete_shelf'){
-        $id=(int)$_POST['shelf_id'];$d['shelves']=array_values(array_filter($d['shelves'],fn($x)=>(int)$x['id']!==$id));
+        $id=(int)$_POST['shelf_id'];$d['shelves']=array_values(array_filter($d['shelves'],function($x) use ($id){ return (int)$x['id']!==$id; }));
         foreach($d['books'] as &$b)if((int)($b['shelf_id']??0)===$id)$b['shelf_id']=0;
         unset($b);db_save($dataFile,$d);flash('success','Shelf deleted.');go('shelves');
     }
@@ -148,20 +148,21 @@ $flash=$_SESSION['flash']??null; unset($_SESSION['flash']);
 
 $q=trim($_GET['q']??'');$tagq=trim($_GET['tag_q']??'');$status=trim($_GET['status']??'');$tagf=(int)($_GET['tag']??0);
 $statuses=['Available','Lent','Borrowed','Reading','Wishlist'];
-$books=array_values(array_filter($d['books'],function($b)use($q,$status,$tagf){
+$books=array_values(array_filter($d['books'],function($b) use ($q,$status,$tagf){
     $hay=strtolower(($b['title']??'').' '.($b['author']??'').' '.($b['isbn']??'').' '.($b['publisher']??''));
-    return ($q===''||str_contains($hay,strtolower($q)))
-        &&($status===''||($b['status']??'')===$status)
-        &&($tagf===0||in_array($tagf,array_map('intval',$b['tag_ids']??[]),true));
+    $qOk = ($q==='' || strpos($hay, strtolower($q)) !== false);
+    $sOk = ($status==='' || ($b['status']??'')===$status);
+    $tOk = ($tagf===0 || in_array($tagf,array_map('intval',$b['tag_ids']??[]),true));
+    return $qOk && $sOk && $tOk;
 }));
-$tags=array_values(array_filter($d['tags'],fn($t)=>$tagq===''||str_contains(strtolower($t['name']??''),strtolower($tagq))));
+$tags=array_values(array_filter($d['tags'],function($t) use ($tagq){ return $tagq==='' || strpos(strtolower($t['name']??''),strtolower($tagq)) !== false; }));
 $tagsAlpha=$d['tags'];
-usort($tagsAlpha,fn($a,$b)=>strnatcasecmp((string)($a['name']??''),(string)($b['name']??'')));
+usort($tagsAlpha,function($a,$b){ return strnatcasecmp((string)($a['name']??''),(string)($b['name']??'')); });
 function uniq_sorted(array $books,string $field): array {
     $out=[];
     foreach($books as $b){ $v=trim((string)($b[$field]??'')); if($v!=='') $out[$v]=$v; }
     $out=array_values($out);
-    usort($out,fn($a,$b)=>strnatcasecmp($a,$b));
+    usort($out,function($a,$b){ return strnatcasecmp($a,$b); });
     return $out;
 }
 $authorList=uniq_sorted($d['books'],'author');
@@ -173,9 +174,16 @@ $editBook=isset($_GET['edit'])?row_by_id($d['books'],(int)$_GET['edit']):null;
 $editTag=isset($_GET['edit_tag'])?row_by_id($d['tags'],(int)$_GET['edit_tag']):null;
 $editShelf=isset($_GET['edit_shelf'])?row_by_id($d['shelves'],(int)$_GET['edit_shelf']):null;
 
-$activeLoans=array_values(array_filter($d['loans'],fn($l)=>($l['status']??'')!=='Returned'));
-$overdueLoans=array_values(array_filter($activeLoans,fn($l)=>($l['due_date']??'')!=='' && $l['due_date']<date('Y-m-d')));
-$lentCount=count(array_filter($d['books'],fn($b)=>in_array($b['status']??'',['Lent','Borrowed'],true)));
+$activeLoans=array_values(array_filter($d['loans'],function($l){ return ($l['status']??'')!=='Returned'; }));
+$overdueLoans=array_values(array_filter($activeLoans,function($l){ return ($l['due_date']??'')!=='' && $l['due_date']<date('Y-m-d'); }));
+$lentCount=count(array_filter($d['books'],function($b){ return in_array($b['status']??'',['Lent','Borrowed'],true); }));
+$tagUsage=[];
+foreach($d['tags'] as $t){
+    $cnt=count(array_filter($d['books'],function($b)use($t){ return in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true); }));
+    $tagUsage[]=['id'=>(int)$t['id'],'name'=>(string)($t['name']??''),'count'=>$cnt];
+}
+usort($tagUsage,function($a,$b){ return ($b['count']<=>$a['count']) ?: strnatcasecmp($a['name'],$b['name']); });
+$topTags=array_slice($tagUsage,0,6);
 $subtitles=[
     'dashboard'=>'A quick overview of your collection',
     'books'=>'Find, add and manage your books',
@@ -191,346 +199,269 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234f46e5'/><rect x='7' y='8' width='8' height='17' rx='2' fill='white'/><rect x='17' y='8' width='8' height='17' rx='2' fill='white' opacity='.7'/></svg>">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
 	:root{
-		--brand:#4f46e5;
-		--brand-dark:#4338ca;
-		--brand2:#7c3aed;
-		--ink:#0f172a;
+		--brand:#6366f1;
+		--brand-dark:#4f46e5;
+		--brand2:#a855f7;
+		--accent:#06b6d4;
+		--ink:#0b1220;
 		--muted:#6b7488;
-		--line:#e8ebf3;
-		--bg:#f3f5fb
+		--line:#e9ecf5;
+		--bg:#f5f6fc;
+		--card:#ffffff;
+		--shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+		--shadow-md: 0 10px 30px -12px rgba(15,23,42,.12);
+		--shadow-lg: 0 24px 60px -20px rgba(15,23,42,.18);
 	}
-	 body{
-		background:var(--bg);
+	*{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+	body{
+		background:
+			radial-gradient(1200px 600px at 100% -10%, rgba(168,85,247,.10), transparent 60%),
+			radial-gradient(900px 500px at -10% 10%, rgba(99,102,241,.10), transparent 60%),
+			var(--bg);
 		color:var(--ink);
 		font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
-		font-size:14.5px
+		font-size:14.5px;
+		min-height:100vh;
 	}
-	 .topbar{
-		background:#fff;
+	.serif{ font-family:'Fraunces', Georgia, serif; letter-spacing:-.01em; }
+
+	/* ---------- Top bar ---------- */
+	.topbar{
+		background:rgba(255,255,255,.85);
+		backdrop-filter: saturate(180%) blur(14px);
+		-webkit-backdrop-filter: saturate(180%) blur(14px);
 		border-bottom:1px solid var(--line);
-		position:sticky;
-		top:0;
-		z-index:1030
+		position:sticky; top:0; z-index:1030;
 	}
-	 .topbar .brand-text{
-		font-weight:800;
-		letter-spacing:-.01em
+	.topbar .brand-text{ font-weight:800; letter-spacing:-.01em; }
+
+	/* ---------- Sidebar ---------- */
+	.sidebar{
+		background:
+			radial-gradient(600px 300px at 20% -10%, rgba(99,102,241,.35), transparent 60%),
+			radial-gradient(500px 300px at 100% 100%, rgba(168,85,247,.25), transparent 60%),
+			linear-gradient(180deg,#10162b 0%,#0a0f22 100%);
+		width:268px;
+		padding:22px 16px!important;
 	}
-	 .sidebar{
-		background:linear-gradient(180deg,#141b31 0%,#0d1226 100%);
-		width:264px;
-		padding:22px 16px!important
+	.sidebar .brand{
+		display:flex; align-items:center; gap:12px;
+		color:#fff; font-weight:800; font-size:19px;
+		letter-spacing:-.01em; margin:2px 6px 22px;
 	}
-	 .sidebar .brand{
-		display:flex;
-		align-items:center;
-		gap:11px;
-		color:#fff;
-		font-weight:800;
-		font-size:19px;
-		letter-spacing:-.01em;
-		margin:2px 6px 20px
-	}
-	 .brand-mark{
-		width:38px;
-		height:38px;
-		border-radius:12px;
+	.brand-mark{
+		width:40px; height:40px; border-radius:13px;
 		background:linear-gradient(135deg,var(--brand),var(--brand2));
-		display:grid;
-		place-items:center;
+		display:grid; place-items:center; color:#fff;
+		font-size:19px; flex:0 0 auto;
+		box-shadow:0 8px 24px -8px rgba(99,102,241,.6), inset 0 0 0 1px rgba(255,255,255,.15);
+	}
+	.sidebar .nav-label{
+		font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+		color:#647093; margin:18px 0 8px 12px; font-weight:700;
+	}
+	.sidebar a{
+		display:flex; align-items:center; gap:12px;
+		color:#a9b3cc; padding:11px 14px; border-radius:12px;
+		margin:3px 0; text-decoration:none; font-weight:600;
+		font-size:14px; position:relative;
+		transition:background .18s, color .18s, transform .18s;
+	}
+	.sidebar a i{ width:18px; text-align:center; font-size:16px; }
+	.sidebar a:hover{ background:rgba(255,255,255,.06); color:#fff; transform:translateX(2px); }
+	.sidebar a.active{
+		background:linear-gradient(90deg,rgba(99,102,241,.45),rgba(99,102,241,.06));
 		color:#fff;
-		font-size:18px;
-		flex:0 0 auto
+		box-shadow:inset 0 0 0 1px rgba(148,163,255,.28), 0 8px 24px -14px rgba(99,102,241,.9);
 	}
-	 .sidebar .nav-label{
-		font-size:11px;
-		letter-spacing:.14em;
-		text-transform:uppercase;
-		color:#5d6b8a;
-		margin:16px 0 8px 12px;
-		font-weight:700
+	.sidebar a.active::before{
+		content:""; position:absolute; left:-16px; top:50%; transform:translateY(-50%);
+		width:3px; height:22px; border-radius:3px;
+		background:linear-gradient(180deg,var(--brand),var(--brand2));
 	}
-	 .sidebar a{
-		display:flex;
-		align-items:center;
-		gap:11px;
-		color:#aab5cf;
-		padding:11px 14px;
-		border-radius:12px;
-		margin:3px 0;
-		text-decoration:none;
-		font-weight:600;
-		font-size:14px;
-		transition:background .18s,color .18s
+	.sidebar .side-foot{
+		color:#5d6b8a; font-size:12px; margin-top:auto;
+		padding:16px 12px 0; border-top:1px solid rgba(255,255,255,.07);
 	}
-	 .sidebar a i{
-		width:18px;
-		text-align:center;
-		font-size:16px
+
+	@media(min-width:992px){
+		.sidebar{ position:sticky; top:0; min-height:100vh; transform:none!important; visibility:visible!important; }
+		main{ min-height:100vh; }
 	}
-	 .sidebar a:hover{
-		background:#1c2542;
-		color:#fff
-	}
-	 .sidebar a.active{
-		background:linear-gradient(90deg,rgba(99,102,241,.45),rgba(99,102,241,.10));
-		color:#fff;
-		box-shadow:inset 0 0 0 1px rgba(148,163,255,.25)
-	}
-	 .sidebar .side-foot{
-		color:#5d6b8a;
-		font-size:12px;
-		margin-top:auto;
-		padding:16px 12px 0;
-		border-top:1px solid rgba(255,255,255,.07)
-	}
-	 @media(min-width:992px){
-		 .sidebar{
-			position:sticky;
-			top:0;
-			min-height:100vh;
-			transform:none!important;
-			visibility:visible!important
-		}
-		 main{
-			min-height:100vh
-		}
-	}
-	 .card{
-		border:0;
+
+	/* ---------- Cards ---------- */
+	.card{
+		background:var(--card);
+		border:1px solid rgba(15,23,42,.04);
 		border-radius:18px;
-		box-shadow:0 8px 26px rgba(15,23,42,.06)
+		box-shadow:var(--shadow-md);
+		transition:box-shadow .25s ease, transform .25s ease;
 	}
-	 .card-header{
-		background:transparent;
+	.card-hover:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+	.tag-stat{ color:var(--ink); text-decoration:none; }
+	.tag-stat .tag-arrow{ transition:transform .2s ease, color .2s ease; }
+	.tag-stat:hover .tag-arrow{ transform:translate(2px,-2px); color:var(--brand); }
+	.card-header{
+		background:transparent; border:0; font-weight:700;
+		font-size:16px; padding:0 0 14px;
+	}
+
+	/* ---------- Typography ---------- */
+	.page-title{ font-weight:800; letter-spacing:-.025em; }
+	.page-subtitle{ color:var(--muted); font-size:13.5px; }
+	.muted{ color:var(--muted); font-size:13px; }
+
+	/* ---------- Stats ---------- */
+	.stat{ font-size:32px; font-weight:800; letter-spacing:-.03em; line-height:1.05; }
+	.stat-icon{
+		width:48px; height:48px; border-radius:14px;
+		display:grid; place-items:center; font-size:22px;
+		box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);
+	}
+	.i-indigo{ background:rgba(99,102,241,.14); color:#4f46e5; }
+	.i-cyan{ background:rgba(6,182,212,.14); color:#0891b2; }
+	.i-amber{ background:rgba(217,119,6,.16); color:#d97706; }
+	.i-rose{ background:rgba(225,29,72,.12); color:#e11d48; }
+
+	/* ---------- Buttons ---------- */
+	.btn{ border-radius:11px; font-weight:600; padding:.55rem 1rem; transition:all .18s ease; }
+	.btn-sm{ padding:.34rem .68rem; font-size:13px; border-radius:9px; }
+	.btn-primary{
+		background:linear-gradient(135deg,var(--brand),var(--brand-dark));
 		border:0;
-		font-weight:700;
-		font-size:16px;
-		padding:0 0 14px
+		box-shadow:0 10px 22px -10px rgba(99,102,241,.65);
 	}
-	 .page-title{
-		font-weight:800;
-		letter-spacing:-.02em
+	.btn-primary:hover,.btn-primary:focus{
+		background:linear-gradient(135deg,var(--brand-dark),#4338ca);
+		transform:translateY(-1px);
+		box-shadow:0 14px 26px -10px rgba(99,102,241,.75);
 	}
-	 .muted{
-		color:var(--muted);
-		font-size:13px
+	.btn-dark{ background:#0b1220; border-color:#0b1220; }
+	.btn-dark:hover{ background:#000; }
+
+	/* ---------- Forms ---------- */
+	.form-control,.form-select{
+		border-radius:11px; border-color:#e2e7f1;
+		padding:.62rem .9rem; background:#fbfcff;
+		transition:border-color .18s, box-shadow .18s, background .18s;
 	}
-	 .stat{
-		font-size:30px;
-		font-weight:800;
-		letter-spacing:-.02em;
-		line-height:1.1
-	}
-	 .stat-icon{
-		width:46px;
-		height:46px;
-		border-radius:14px;
-		display:grid;
-		place-items:center;
-		font-size:21px
-	}
-	 .i-indigo{
-		background:rgba(79,70,229,.12);
-		color:#4f46e5
-	}
-	 .i-cyan{
-		background:rgba(8,145,178,.12);
-		color:#0891b2
-	}
-	 .i-amber{
-		background:rgba(217,119,6,.14);
-		color:#d97706
-	}
-	 .i-rose{
-		background:rgba(225,29,72,.11);
-		color:#e11d48
-	}
-	 .btn{
-		border-radius:11px;
-		font-weight:600;
-		padding:.55rem 1rem
-	}
-	 .btn-sm{
-		padding:.34rem .68rem;
-		font-size:13px
-	}
-	 .btn-primary{
-		background:var(--brand);
-		border-color:var(--brand);
-		box-shadow:0 6px 16px rgba(79,70,229,.28)
-	}
-	 .btn-primary:hover,.btn-primary:focus{
-		background:var(--brand-dark);
-		border-color:var(--brand-dark)
-	}
-	 .btn-dark{
-		background:#111827;
-		border-color:#111827
-	}
-	 .form-control,.form-select{
-		border-radius:11px;
-		border-color:#dfe3ee;
-		padding:.62rem .9rem
-	}
-	 .form-control:focus,.form-select:focus{
+	.form-control:hover,.form-select:hover{ border-color:#cdd5e6; }
+	.form-control:focus,.form-select:focus{
+		background:#fff;
 		border-color:#a5b4fc;
-		box-shadow:0 0 0 .18rem rgba(99,102,241,.16)
+		box-shadow:0 0 0 .18rem rgba(99,102,241,.16);
 	}
-	 .form-label{
-		font-size:12.5px;
-		font-weight:700;
-		color:#55607a;
-		margin-bottom:6px
+	.form-label{ font-size:12.5px; font-weight:700; color:#55607a; margin-bottom:6px; letter-spacing:.01em; }
+	.section-label{
+		font-size:11.5px; font-weight:800; letter-spacing:.12em;
+		text-transform:uppercase; color:#94a0b8;
+		border-bottom:1px dashed var(--line);
+		padding-bottom:8px; margin-top:4px;
 	}
-	 .section-label{
-		font-size:11.5px;
-		font-weight:800;
-		letter-spacing:.1em;
-		text-transform:uppercase;
-		color:#94a0b8;
-		border-bottom:1px solid var(--line);
-		padding-bottom:7px;
-		margin-top:4px
+	.input-icon{ position:relative; }
+	.input-icon>i{
+		position:absolute; left:14px; top:50%; transform:translateY(-50%);
+		color:#9aa4bd; pointer-events:none;
 	}
-	 .input-icon{
-		position:relative
+	.input-icon>.form-control{ padding-left:40px; }
+
+	/* ---------- Tables ---------- */
+	.table{ --bs-table-bg:transparent; }
+	.table thead th{
+		font-size:11.5px; text-transform:uppercase; letter-spacing:.08em;
+		color:#8a93a9; font-weight:700; background:#f8f9fd;
+		border-bottom:1px solid var(--line); padding:.75rem .8rem;
 	}
-	 .input-icon>i{
-		position:absolute;
-		left:14px;
-		top:50%;
-		transform:translateY(-50%);
-		color:#9aa4bd;
-		pointer-events:none
-	}
-	 .input-icon>.form-control{
-		padding-left:40px
-	}
-	 .table thead th{
-		font-size:11.5px;
-		text-transform:uppercase;
-		letter-spacing:.06em;
-		color:#8a93a9;
-		font-weight:700;
-		background:#f8f9fd;
-		border-bottom:1px solid var(--line);
-		padding:.7rem .75rem
-	}
-	 .table td{
-		vertical-align:middle;
-		padding:.8rem .75rem
-	}
-	 .table tbody tr:last-child td{
-		border-bottom:0
-	}
-	 .cover{
-		width:40px;
-		height:56px;
-		border-radius:8px;
-		object-fit:cover;
-		background:#eef1f8;
+	.table td{ vertical-align:middle; padding:.85rem .8rem; border-color:#eef1f8; }
+	.table tbody tr{ transition:background .15s; }
+	.table tbody tr:hover{ background:#fafbff; }
+	.table tbody tr:last-child td{ border-bottom:0; }
+
+	/* ---------- Cover ---------- */
+	.cover{
+		width:44px; height:60px; border-radius:9px; object-fit:cover;
+		background:linear-gradient(180deg,#eef1f8,#e2e7f3);
 		border:1px solid var(--line);
-		display:grid;
-		place-items:center;
-		color:#9aa4bd;
-		flex:0 0 auto;
+		display:grid; place-items:center; color:#9aa4bd;
+		flex:0 0 auto; overflow:hidden; font-size:18px;
+		box-shadow:inset 0 -8px 14px -10px rgba(15,23,42,.25);
+	}
+
+	/* ---------- Badges ---------- */
+	.badge{
+		font-weight:600; font-size:12px; padding:.45em .85em;
+		border-radius:999px; letter-spacing:.01em;
+	}
+	.text-purple{ color:#7c3aed!important; }
+	.bg-purple-subtle{ background:rgba(124,58,237,.12)!important; }
+	.text-warning{ color:#b45309!important; }
+	.bg-warning-subtle{ background:rgba(217,119,6,.14)!important; }
+
+	/* ---------- Modals ---------- */
+	.modal-content{
+		border:0; border-radius:22px;
+		box-shadow:0 30px 70px -20px rgba(2,6,23,.35);
 		overflow:hidden;
-		font-size:17px
 	}
-	 .badge{
-		font-weight:600;
-		font-size:12px;
-		padding:.45em .85em;
-		border-radius:999px
-	}
-	 .text-purple{
-		color:#7c3aed!important
-	}
-	 .bg-purple-subtle{
-		background:rgba(124,58,237,.12)!important
-	}
-	 .text-warning{
-		color:#b45309!important
-	}
-	 .bg-warning-subtle{
-		background:rgba(217,119,6,.14)!important
-	}
-	 .modal-content{
-		border:0;
-		border-radius:20px;
-		box-shadow:0 24px 60px rgba(2,6,23,.25)
-	}
-	 .modal-header,.modal-footer{
-		border-color:#eef1f8
-	}
-	 .modal-title{
-		font-weight:700
-	}
-	 .modal-dialog{
-		max-height:94vh
-	}
-	 .modal-body{
-		overflow-y:auto;
-		max-height:calc(94vh - 140px);
-		padding:1.4rem
-	}
-	 .tag-scroll{
-		max-height:180px;
-		overflow-y:auto;
+	.modal-header,.modal-footer{ border-color:#eef1f8; padding:1rem 1.4rem; }
+	.modal-title{ font-weight:700; }
+	.modal-dialog{ max-height:94vh; }
+	.modal-body{ overflow-y:auto; max-height:calc(94vh - 140px); padding:1.4rem; }
+
+	/* ---------- Tag picker ---------- */
+	.tag-scroll{
+		max-height:180px; overflow-y:auto;
 		border:1px dashed var(--line)!important;
-		border-radius:12px!important;
-		background:#fafbfe
+		border-radius:12px!important; background:#fafbfe;
 	}
-	 .tag-scroll label{
-		font-size:14px
+	.tag-scroll label{ font-size:14px; }
+
+	/* ---------- Empty state ---------- */
+	.empty{ text-align:center; padding:50px 20px; color:var(--muted); }
+	.empty i{ font-size:44px; color:#c6cde0; display:block; margin-bottom:14px; }
+	.empty h6{ font-weight:700; color:#475069; margin-bottom:6px; }
+
+	/* ---------- Alerts ---------- */
+	.alert{
+		border:0; border-radius:14px; font-weight:600;
+		box-shadow:0 10px 30px -14px rgba(15,23,42,.18);
 	}
-	 .empty{
-		text-align:center;
-		padding:46px 20px;
-		color:var(--muted)
+
+	/* ---------- Loan list ---------- */
+	.list-loan{
+		display:flex; justify-content:space-between; align-items:center;
+		gap:12px; padding:14px 0; border-bottom:1px dashed var(--line);
 	}
-	 .empty i{
-		font-size:40px;
-		color:#c6cde0;
-		display:block;
-		margin-bottom:12px
+	.list-loan:last-child{ border-bottom:0; }
+
+	.filters-card{ background:linear-gradient(135deg,#fff 0%,#fbfcff 100%); }
+
+	.section-link{
+		color:var(--brand-dark); text-decoration:none; font-weight:600;
+		font-size:13px; transition:color .15s;
 	}
-	 .empty h6{
-		font-weight:700;
-		color:#475069
+	.section-link:hover{ color:var(--brand2); }
+
+	/* ---------- Animations ---------- */
+	@keyframes fadeUp{
+		from{ opacity:0; transform:translateY(8px); }
+		to{ opacity:1; transform:translateY(0); }
 	}
-	 .alert{
-		border:0;
-		border-radius:14px;
-		font-weight:600;
-		box-shadow:0 8px 22px rgba(15,23,42,.07)
-	}
-	 .list-loan{
-		display:flex;
-		justify-content:space-between;
-		align-items:center;
-		gap:12px;
-		padding:12px 0;
-		border-bottom:1px solid var(--line)
-	}
-	 .list-loan:last-child{
-		border-bottom:0
-	}
-	 .filters-card{
-		background:linear-gradient(135deg,#fff,#fbfcff)
-	}
-	 .section-link{
-		color:var(--brand);
-		text-decoration:none;
-		font-weight:600
-	}
-	 .section-link:hover{
-		text-decoration:underline
-	}
+	.fade-up{ animation:fadeUp .35s ease both; }
+	.fade-up-1{ animation-delay:.03s; }
+	.fade-up-2{ animation-delay:.08s; }
+	.fade-up-3{ animation-delay:.13s; }
+	.fade-up-4{ animation-delay:.18s; }
+
+	/* Nicer scrollbars */
+	::-webkit-scrollbar{ width:10px; height:10px; }
+	::-webkit-scrollbar-thumb{ background:#d4dae9; border-radius:20px; border:3px solid transparent; background-clip:content-box; }
+	::-webkit-scrollbar-thumb:hover{ background:#b8c1d8; background-clip:content-box; border:3px solid transparent; }
 </style>
 </head><body>
 <div class="d-flex">
@@ -558,10 +489,10 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </nav>
 
   <main class="p-4 flex-grow-1">
-  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 fade-up">
     <div>
-      <h2 class="page-title mb-1"><?=h(ucfirst($section))?></h2>
-      <div class="muted"><?=h($subtitles[$section]??'')?></div>
+      <h2 class="page-title serif mb-1"><?=h(ucfirst($section))?></h2>
+      <div class="page-subtitle"><?=h($subtitles[$section]??'')?></div>
     </div>
     <div class="d-flex gap-2">
       <?php if($section==='books'):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookModal"><i class="bi bi-plus-lg me-1"></i>Add Book</button><?php endif;?>
@@ -572,7 +503,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </div>
 
   <?php if($flash):?>
-  <div class="alert alert-<?=h($flash['type']??'info')?> d-flex align-items-center gap-2 mb-4" id="flashAlert" role="alert">
+  <div class="alert alert-<?=h($flash['type']??'info')?> d-flex align-items-center gap-2 mb-4 fade-up" id="flashAlert" role="alert">
     <i class="bi bi-<?=h($flashIcons[$flash['type']??'']??'info-circle-fill')?>"></i>
     <span><?=h($flash['msg'])?></span>
     <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -586,8 +517,8 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
       ['Tags',count($d['tags']),'bi-bookmark','i-cyan'],
       ['Shelves',count($d['shelves']),'bi-archive','i-amber'],
       ['On Loan',$lentCount,'bi-send','i-rose'],
-    ] as $x):?>
-    <div class="col-sm-6 col-xl-3"><div class="card p-4 h-100">
+    ] as $i=>$x):?>
+    <div class="col-sm-6 col-xl-3 fade-up fade-up-<?=$i+1?>"><div class="card card-hover p-4 h-100">
       <div class="d-flex justify-content-between align-items-start">
         <div><div class="muted mb-2"><?=$x[0]?></div><div class="stat"><?=$x[1]?></div></div>
         <div class="stat-icon <?=$x[3]?>"><i class="bi <?=$x[2]?>"></i></div>
@@ -596,8 +527,27 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     <?php endforeach;?>
   </div>
 
+  <?php if($topTags):?>
+  <div class="row g-3 mb-4">
+    <div class="col-12 d-flex align-items-baseline gap-2">
+      <span class="muted">Tap a tag to open its filtered book list</span>
+    </div>
+    <?php foreach($topTags as $i=>$t):?>
+    <div class="col-6 col-md-4 col-xl-2 fade-up fade-up-<?=($i%4)+1?>">
+      <a class="card card-hover p-3 h-100 tag-stat d-block" href="?section=books&tag=<?=$t['id']?>" title="Show books tagged <?=h($t['name'])?>">
+        <div class="d-flex align-items-center justify-content-between">
+          <span class="badge bg-purple-subtle text-purple"><i class="bi bi-bookmark me-1"></i><?=$t['count']?> book(s)</span>
+          <i class="bi bi-box-arrow-up-right tag-arrow muted"></i>
+        </div>
+        <div class="fw-bold text-truncate mt-2"><?=h($t['name'])?></div>
+      </a>
+    </div>
+    <?php endforeach;?>
+  </div>
+  <?php endif;?>
+
   <?php if($overdueLoans):?>
-  <div class="alert alert-danger d-flex align-items-center gap-2 mb-4">
+  <div class="alert alert-danger d-flex align-items-center gap-2 mb-4 fade-up">
     <i class="bi bi-exclamation-triangle-fill"></i>
     <span><?=count($overdueLoans)?> loan(s) are past their due date.</span>
     <a href="?section=lending" class="alert-link ms-auto fw-bold">Review →</a>
@@ -605,13 +555,13 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   <?php endif;?>
 
   <div class="row g-4">
-    <div class="col-lg-7">
+    <div class="col-lg-7 fade-up fade-up-2">
       <div class="card p-4 h-100">
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="fw-bold mb-0">Recently Added</h5>
-          <a class="section-link" href="?section=books">View all</a>
+          <h5 class="fw-bold mb-0 serif">Recently Added</h5>
+          <a class="section-link" href="?section=books">View all <i class="bi bi-arrow-right"></i></a>
         </div>
-        <?php $recent=array_slice(array_reverse($d['books']),0,8);?>
+        <?php $recent=array_slice(array_reverse($d['books']),0,5);?>
         <?php if(!$recent):?>
           <div class="empty"><i class="bi bi-book"></i><h6>No books yet</h6><p class="mb-0">Add your first book to get started.</p></div>
         <?php else:?>
@@ -624,15 +574,15 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
         <?php endif;?>
       </div>
     </div>
-    <div class="col-lg-5">
+    <div class="col-lg-5 fade-up fade-up-3">
       <div class="card p-4 h-100">
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <h5 class="fw-bold mb-0">Active Loans</h5>
-          <a class="section-link" href="?section=lending">Manage</a>
+          <h5 class="fw-bold mb-0 serif">Active Loans</h5>
+          <a class="section-link" href="?section=lending">Manage <i class="bi bi-arrow-right"></i></a>
         </div>
         <?php if(!$activeLoans):?>
           <div class="empty"><i class="bi bi-check2-circle"></i><h6>Nothing on loan</h6><p class="mb-0">All your books are on the shelf.</p></div>
-        <?php else:foreach(array_slice($activeLoans,-6) as$l):$b=row_by_id($d['books'],(int)$l['book_id']);$ls=loan_status($l);?>
+        <?php else:foreach(array_slice($activeLoans,-5) as$l):$b=row_by_id($d['books'],(int)$l['book_id']);$ls=loan_status($l);?>
           <div class="list-loan">
             <div class="min-w-0">
               <div class="fw-semibold text-truncate"><?=h($b['title']??'Deleted book')?></div>
@@ -646,7 +596,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </div>
 
 <?php elseif($section==='books'):?>
-  <div class="card p-3 mb-4 filters-card">
+  <div class="card p-3 mb-4 filters-card fade-up">
     <form class="row g-2 align-items-end">
       <input type="hidden" name="section" value="books">
       <div class="col-lg-5 col-md-6">
@@ -661,7 +611,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
       </div>
       <div class="col-lg-2 col-md-3 col-6">
         <label class="form-label">Tag</label>
-        <select class="form-select" name="tag"><option value="">All tags</option><?php foreach($tagsAlpha as$t):$cnt=count(array_filter($d['books'],fn($b)=>in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true)));?><option value="<?=$t['id']?>"<?=$tagf===(int)$t['id']?' selected':''?>><?=h($t['name'])?> (<?=$cnt?>)</option><?php endforeach;?></select>
+        <select class="form-select" name="tag"><option value="">All tags</option><?php foreach($tagsAlpha as$t):$cnt=count(array_filter($d['books'],function($b) use ($t){ return in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true); }));?><option value="<?=$t['id']?>"<?=$tagf===(int)$t['id']?' selected':''?>><?=h($t['name'])?> (<?=$cnt?>)</option><?php endforeach;?></select>
       </div>
       <div class="col-lg-3 col-md-12 d-flex gap-2">
         <button class="btn btn-primary flex-grow-1"><i class="bi bi-search me-1"></i>Search</button>
@@ -670,7 +620,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
     </form>
   </div>
 
-  <div class="card p-3">
+  <div class="card p-3 fade-up fade-up-2">
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Book</th><th class="d-none d-md-table-cell">ISBN</th><th class="d-none d-lg-table-cell">Shelf</th><th>Tags</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
       <tbody>
@@ -706,18 +656,18 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </div>
 
 <?php elseif($section==='tags'):?>
-  <div class="card p-3 mb-4">
+  <div class="card p-3 mb-4 fade-up">
     <form class="row g-2">
       <input type="hidden" name="section" value="tags">
       <div class="col-md-9"><div class="input-icon"><i class="bi bi-search"></i><input class="form-control" name="tag_q" value="<?=h($tagq)?>" placeholder="Search tags..."></div></div>
       <div class="col-md-3"><button class="btn btn-dark w-100">Search</button></div>
     </form>
   </div>
-  <div class="card p-3">
+  <div class="card p-3 fade-up fade-up-2">
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Tag</th><th>Books</th><th class="text-end">Actions</th></tr></thead>
       <tbody>
-      <?php foreach($tags as$t):$use=count(array_filter($d['books'],fn($b)=>in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true)));?>
+      <?php foreach($tags as$t):$use=count(array_filter($d['books'],function($b) use ($t){ return in_array((int)$t['id'],array_map('intval',$b['tag_ids']??[]),true); }));?>
         <tr>
           <td><span class="badge bg-purple-subtle text-purple">#<?=$t['id']?> · <?=h($t['name'])?></span></td>
           <td><?=$use?> book(s)</td>
@@ -738,13 +688,13 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </div>
 
 <?php elseif($section==='shelves'):?>
-  <div class="card p-3">
+  <div class="card p-3 fade-up">
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Shelf</th><th>Location</th><th>Books</th><th class="text-end">Actions</th></tr></thead>
       <tbody>
-      <?php foreach($d['shelves']as$s):$use=count(array_filter($d['books'],fn($b)=>(int)($b['shelf_id']??0)===(int)$s['id']));?>
+      <?php foreach($d['shelves']as$s):$use=count(array_filter($d['books'],function($b) use ($s){ return (int)($b['shelf_id']??0)===(int)$s['id']; }));?>
         <tr>
-          <td><div class="d-flex align-items-center gap-2"><span class="stat-icon i-amber" style="width:36px;height:36px;font-size:16px"><i class="bi bi-archive"></i></span><span class="fw-semibold"><?=h($s['name'])?></span></div></td>
+          <td><div class="d-flex align-items-center gap-2"><span class="stat-icon i-amber" style="width:38px;height:38px;font-size:16px"><i class="bi bi-archive"></i></span><span class="fw-semibold"><?=h($s['name'])?></span></div></td>
           <td class="text-muted"><?=h($s['location'])?:'—'?></td>
           <td><span class="badge bg-light text-secondary border"><?=$use?> book(s)</span></td>
           <td class="text-end text-nowrap">
@@ -764,7 +714,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   </div>
 
 <?php else:?>
-  <div class="card p-3">
+  <div class="card p-3 fade-up">
     <div class="table-responsive"><table class="table align-middle">
       <thead><tr><th>Book</th><th>Borrower</th><th>Loan Date</th><th>Due Date</th><th>Status</th><th class="text-end">Action</th></tr></thead>
       <tbody>
@@ -864,16 +814,19 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded',function(){
   <?php if($editBook):?>new bootstrap.Modal(document.getElementById('bookModal')).show();<?php endif;?>
   <?php if($editTag):?>new bootstrap.Modal(document.getElementById('tagModal')).show();<?php endif;?>
   <?php if($editShelf):?>new bootstrap.Modal(document.getElementById('shelfModal')).show();<?php endif;?>
-  const flash=document.getElementById('flashAlert');
-  if(flash) setTimeout(()=>{bootstrap.Alert.getOrCreateInstance(flash).close();},4000);
-  document.querySelectorAll('.sidebar a').forEach(a=>a.addEventListener('click',()=>{
-    const off=document.getElementById('sidebar');
-    if(window.bootstrap && off.classList.contains('show')) bootstrap.Offcanvas.getInstance(off)?.hide();
-  }));
+  var flash=document.getElementById('flashAlert');
+  if(flash) setTimeout(function(){ bootstrap.Alert.getOrCreateInstance(flash).close(); },4200);
+  var links = document.querySelectorAll('.sidebar a');
+  for(var i=0;i<links.length;i++){
+    links[i].addEventListener('click',function(){
+      var off=document.getElementById('sidebar');
+      if(window.bootstrap && off.classList.contains('show') && bootstrap.Offcanvas.getInstance(off)) bootstrap.Offcanvas.getInstance(off).close();
+    });
+  }
 });
 </script>
 </body></html>
