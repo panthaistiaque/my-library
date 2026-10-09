@@ -1,130 +1,405 @@
 {
     "meta": {
         "next_ids": {
-            "book": 7,
-            "tag": 31,
+            "book": 18,
+            "tag": 33,
             "shelf": 5,
-            "loan": 2
+            "loan": 1
         }
     },
     "books": [
         {
             "id": 1,
-            "title": "পথের পাঁচালী",
-            "author": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
-            "isbn": "9789840000001",
-            "publisher": "মিত্র ও ঘোষ",
-            "publication_year": "1929",
-            "edition": "1st",
-            "language": "বাংলা",
-            "shelf_id": 1,
+            "title": "আধুনিক দৃষ্টিকোণে সান জু-র: দ্য আর্ট অব ওয়ার",
+            "author": "Major Md. Delwar Hossain (Del H. Khan)",
+            "isbn": "",
+            "publisher": "Batighor prokashoni",
+            "publication_year": "2015",
+            "edition": "2nd",
+            "language": "Bangla",
+            "shelf_id": 4,
             "status": "Available",
-            "cover_url": "",
+            "cover_url": "https://wafilife-media-v2.wafilife.com/uploads/2026/01/download-62-250x375.jpg",
             "purchase_date": "",
-            "purchase_price": "350",
-            "notes": "বাংলা সাহিত্যের একটি বিখ্যাত উপন্যাস",
+            "purchase_price": "150",
+            "notes": "Sun Tzu’s The Art of War has played a highly influential role in the military history and strategic traditions of China and Japan. Many of the strategies and military principles adopted by Mao Zedong and the Chinese military were influenced by the teachings found in this classic work.\r\n\r\nRegarded as one of the most important works of military strategy in the Eastern tradition, The Art of War has also gained widespread recognition and readership beyond China and Japan. It continues to be studied as a classic text on warfare, strategy, leadership, and strategic thinking, and its principles have been applied not only by modern military forces but also in politics, business, and other fields of strategic decision-making.",
             "tag_ids": [
-                1,
-                3,
-                17,
-                25
+                14,
+                6,
+                23
             ],
-            "updated_at": "2026-10-07 12:48:30",
-            "created_at": "2026-10-07 12:25:02"
+            "updated_at": "2026-10-08 15:36:04",
+            "created_at": "2026-10-08 13:33:56"
         },
         {
             "id": 2,
-            "title": "সঞ্চয়িতা",
-            "author": "রবীন্দ্রনাথ ঠাকুর",
-            "isbn": "9789840000002",
-            "publisher": "বিশ্বভারতী",
-            "publication_year": "1931",
-            "edition": "12th",
-            "language": "বাংলা",
-            "shelf_id": 2,
+            "title": "পুতুলনাচের ইতিকথা",
+            "author": "Manik Bandyopadhyay",
+            "isbn": "984-18-0313-5",
+            "publisher": "Bishwo Shahitto Kendro",
+            "publication_year": "Jan 2024",
+            "edition": "9th",
+            "language": "Bangla",
+            "shelf_id": 4,
             "status": "Available",
-            "cover_url": "",
+            "cover_url": "https://rokbucket.rokomari.io/ProductNew20190903/260X372/4979f7025_197805.jpg",
             "purchase_date": "",
-            "purchase_price": "500",
-            "notes": "রবীন্দ্রনাথ ঠাকুরের বিখ্যাত কবিতা সংকলন",
+            "purchase_price": "340",
+            "notes": "Putul Nacher Itikatha (The Puppet Dance of Fate) by Manik Bandopadhyay is a remarkable novel of Bengali literature that explores human psychology, social reality, and the complexities of rural life. Set against the backdrop of rural Bengal, the novel portrays the struggles, desires, relationships, and disappointments of ordinary people. Shashi, one of the central characters, represents the conflict between rational thought and the traditional beliefs of society, while Kusum’s character reflects love, desire, social restrictions, and emotional vulnerability.\r\n\r\nThe novel explores how poverty, social inequality, superstition, and social expectations influence people's lives and choices. Its title suggests that human beings are often like puppets, controlled by circumstances, society, fate, and forces beyond their control. Through deeply developed characters and realistic situations, Manik Bandopadhyay examines the conflict between individual freedom and social destiny. With its psychological depth, realistic portrayal of society, and powerful characterisation, Putul Nacher Itikatha remains an important and influential work in Bengali literature.",
             "tag_ids": [
+                1,
                 3,
-                17,
-                24
+                25
             ],
-            "updated_at": "2026-10-07 12:25:02",
-            "created_at": "2026-10-07 12:25:02"
+            "updated_at": "2026-10-08 15:37:12",
+            "created_at": "2026-10-08 13:39:05"
         },
         {
             "id": 3,
-            "title": "দেবদাস",
-            "author": "শরৎচন্দ্র চট্টোপাধ্যায়",
-            "isbn": "9789840000003",
-            "publisher": "অমর সাহিত্য",
-            "publication_year": "1917",
-            "edition": "5th",
-            "language": "বাংলা",
-            "shelf_id": 1,
+            "title": "ডাকঘর",
+            "author": "Rabindranath Tagore",
+            "isbn": "984-18-0081-X",
+            "publisher": "Bishwo Shahitto Kendro",
+            "publication_year": "",
+            "edition": "",
+            "language": "Bangla",
+            "shelf_id": 4,
             "status": "Available",
-            "cover_url": "",
-            "purchase_date": "",
-            "purchase_price": "280",
-            "notes": "বাংলা সাহিত্যের অন্যতম জনপ্রিয় প্রেমের উপন্যাস",
+            "cover_url": "data:image/jpeg;base64,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",
+            "purchase_date": "2023-12-15",
+            "purchase_price": "60",
+            "notes": "ডাকঘর (The Post Office) by Rabindranath Tagore is a deeply symbolic play about a young boy named Amal, who is confined indoors because of his illness. Fascinated by the outside world, Amal dreams of freedom and eagerly waits for the King’s new post office, believing that a letter from the King will one day arrive for him. Through his conversations with villagers, a watchman, a flower girl, and other visitors, Amal expresses his longing to explore the world beyond his small room. As the story progresses, his imagination becomes increasingly intertwined with reality. The arrival of the King’s physician and the opening of Amal’s window suggest the end of his suffering and his release into eternal freedom. Through Amal’s innocence, imagination, and longing for freedom, Tagore explores themes of life, death, hope, spirituality, and liberation.",
             "tag_ids": [
+                22,
+                31,
                 1,
-                3,
-                25
+                3
             ],
-            "updated_at": "2026-10-07 12:25:02",
-            "created_at": "2026-10-07 12:25:02"
+            "updated_at": "2026-10-08 15:38:09",
+            "created_at": "2026-10-08 13:44:17"
         },
         {
             "id": 4,
-            "title": "হাজার বছর ধরে",
-            "author": "জহির রায়হান",
-            "isbn": "9789840000004",
-            "publisher": "বাংলা একাডেমি",
-            "publication_year": "1964",
-            "edition": "3rd",
-            "language": "বাংলা",
-            "shelf_id": 3,
+            "title": "পাইথন পরিচিতি",
+            "author": "Tamim Shahriar Subeen",
+            "isbn": "978-984-33-9076-6",
+            "publisher": "Onnorokom Prokashonee",
+            "publication_year": "2016",
+            "edition": "2nd",
+            "language": "Bangla",
+            "shelf_id": 4,
             "status": "Available",
-            "cover_url": "",
+            "cover_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-vvoVXm5Say8oktGtNh3E6fJiI4TzZPvOni8HD8rbQ&s",
             "purchase_date": "",
-            "purchase_price": "320",
-            "notes": "বাংলার গ্রামীণ সমাজ ও মানুষের জীবন নিয়ে লেখা একটি উপন্যাস",
+            "purchase_price": "260",
+            "notes": "পাইথন পরিচিতি by Tamim Shahriar Subin is a beginner-friendly book designed to introduce readers to the Python programming language. It explains the fundamental concepts of programming in a simple and practical way, making it suitable for students and newcomers with little or no prior programming experience. The book covers essential topics such as variables, data types, operators, conditions, loops, functions, lists, dictionaries, and other core Python concepts. Through examples and practical explanations, readers gradually develop their programming and problem-solving skills. Overall, the book provides a strong foundation for anyone who wants to start learning Python and build a career in programming or software development.",
             "tag_ids": [
-                1,
-                3,
-                17,
-                25
+                22,
+                8,
+                9
             ],
-            "updated_at": "2026-10-07 12:25:02",
-            "created_at": "2026-10-07 12:25:02"
+            "updated_at": "2026-10-08 15:43:50",
+            "created_at": "2026-10-08 13:50:00"
         },
         {
             "id": 5,
-            "title": "লালসালু",
-            "author": "সৈয়দ ওয়ালীউল্লাহ",
-            "isbn": "9789840000005",
-            "publisher": "স্টুডেন্ট ওয়েজ",
-            "publication_year": "1948",
-            "edition": "8th",
-            "language": "বাংলা",
+            "title": "দিবারাত্রির কাব্য",
+            "author": "Manik Bandyopadhyay",
+            "isbn": "984-415-075-2",
+            "publisher": "Abosar Prokashana Sangstha",
+            "publication_year": "2020",
+            "edition": "4th",
+            "language": "Bangla",
             "shelf_id": 4,
             "status": "Available",
-            "cover_url": "",
+            "cover_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQj-zU4E0nMs0jsXhJiw7kZQIiwse2BCWmYztzmPJDiw&s=10",
             "purchase_date": "",
-            "purchase_price": "400",
-            "notes": "বাংলা সাহিত্যের একটি গুরুত্বপূর্ণ সামাজিক উপন্যাস",
+            "purchase_price": "150",
+            "notes": "দিবারাত্রির কাব্য by Manik Bandopadhyay is a psychological and philosophical novel that explores the complexities of human relationships, desire, loneliness, and inner conflict. The story focuses on the emotional and psychological struggles of its characters as they confront love, attraction, social expectations, and the contradictions within their own minds. Manik presents human beings not as purely good or bad, but as complex individuals driven by both conscious choices and unconscious desires. The contrast between “day” and “night” symbolically reflects the opposing sides of human existence—reason and emotion, morality and desire, reality and the subconscious. Through realistic characters and intense psychological exploration, the novel offers a profound examination of human nature and the hidden forces that shape our lives.",
+            "tag_ids": [
+                3,
+                25
+            ],
+            "updated_at": "2026-10-08 15:43:16",
+            "created_at": "2026-10-08 13:53:49"
+        },
+        {
+            "id": 6,
+            "title": "পুবের সূর্য",
+            "author": "Shahriar Kabir",
+            "isbn": "984-412-063-2",
+            "publisher": "Anannya Prokashoni",
+            "publication_year": "1999",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "data:image/jpeg;base64,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",
+            "purchase_date": "",
+            "purchase_price": "60",
+            "notes": "পুবের সূর্য by Shahriyar Kabir is a historical and political novel centered on the struggle for freedom, justice, and national identity. Set against the backdrop of the Liberation War of Bangladesh, the novel portrays the suffering, courage, and resistance of ordinary people during a turbulent period. Through its characters and events, the author highlights the brutality of war, the spirit of patriotism, and the sacrifices made for the country’s independence. The novel also explores human relationships, hope, fear, and the determination to overcome oppression. Overall, Puber Surjo is a powerful narrative about the Bangladesh Liberation War and the awakening of a nation’s desire for freedom.",
+            "tag_ids": [
+                4,
+                3,
+                25,
+                13
+            ],
+            "updated_at": "2026-10-08 15:41:54",
+            "created_at": "2026-10-08 13:58:52"
+        },
+        {
+            "id": 7,
+            "title": "দুটি ফুল একটি কুঁড়ি",
+            "author": "Shirshendu Mukhopadhyay",
+            "isbn": "",
+            "publisher": "Kamini Publications",
+            "publication_year": "1996",
+            "edition": "5th",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://pathokpoint.com/_next/image?url=https%3A%2F%2Fsin1.contabostorage.com%2F491fe63646864115bcc218b0b37e66f4%3Aprod-bucket%2Fbook%2F202-3838.jpg&w=1080&q=75",
+            "purchase_date": "",
+            "purchase_price": "40",
+            "notes": "দুটি ফুল একটি কুঁড়ি by Shirshendu Mukhopadhyay is a light-hearted and engaging Bengali novel that explores family relationships, human emotions, and the humorous complexities of everyday life. Through its lively characters and simple yet thoughtful storytelling, the novel presents moments of affection, misunderstanding, conflict, and reconciliation. The story blends humor with emotional depth, portraying the innocence and unpredictability of human relationships. Shirshendu’s characteristic wit and imaginative style make the narrative entertaining while also highlighting the warmth, imperfections, and beauty of ordinary life.",
             "tag_ids": [
                 1,
                 3,
-                7,
                 25
             ],
-            "updated_at": "2026-10-07 12:25:02",
-            "created_at": "2026-10-07 12:25:02"
+            "updated_at": "2026-10-08 15:39:57",
+            "created_at": "2026-10-08 14:02:52"
+        },
+        {
+            "id": 8,
+            "title": "ইন্দ্রজাল",
+            "author": "Jimmy Hyson",
+            "isbn": "978-984-776-502-0",
+            "publisher": "Oitijjhya",
+            "publication_year": "2019",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1550049600i/44000656.jpg",
+            "purchase_date": "",
+            "purchase_price": "250",
+            "notes": "ইন্দ্রজাল by Jimmy Haysen is an intriguing mystery and adventure novel filled with suspense, danger, and unexpected twists. The story revolves around mysterious events and hidden secrets that gradually draw the characters into a complex web of deception and uncertainty. As the mystery unfolds, the characters face various challenges and attempt to uncover the truth behind the strange occurrences. The novel combines suspense, imagination, and adventure to keep the reader engaged until the end. With its fast-paced storytelling and mysterious atmosphere, ইন্দ্রজাল offers an entertaining reading experience for lovers of mystery and adventure.",
+            "tag_ids": [
+                1,
+                25
+            ],
+            "updated_at": "2026-10-08 15:41:15",
+            "created_at": "2026-10-08 14:07:00"
+        },
+        {
+            "id": 9,
+            "title": "লাল সালু",
+            "author": "Syed Waliullah",
+            "isbn": "984-826-124-9",
+            "publisher": "Sky Publishars",
+            "publication_year": "2013",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://img.drz.lazcdn.com/static/bd/p/23ce38c43b07c8c896083ab44051ce05.jpg_720x720q80.jpg_.webp",
+            "purchase_date": "",
+            "purchase_price": "125",
+            "notes": "সৈয়দ ওয়ালীউল্লাহর লালসালু বাংলা সাহিত্যের একটি বিখ্যাত সমাজবাস্তবতাধর্মী উপন্যাস। এর কেন্দ্রীয় চরিত্র মজিদ একজন ধূর্ত ও সুযোগসন্ধানী ব্যক্তি, যে একটি প্রত্যন্ত গ্রামে এসে একটি পুরোনো কবরকে ‘পবিত্র মাজার’ হিসেবে প্রতিষ্ঠা করে এবং ধর্মীয় বিশ্বাসকে কাজে লাগিয়ে গ্রামের মানুষের ওপর প্রভাব বিস্তার করে। লাল কাপড়ে ঢাকা সেই কবরকে কেন্দ্র করে সে নিজের ক্ষমতা ও আর্থিক স্বার্থ গড়ে তোলে। উপন্যাসে মজিদের ধর্মব্যবসা, কুসংস্কার, অন্ধবিশ্বাস, শোষণ এবং গ্রামীণ সমাজের অসহায়ত্ব তুলে ধরা হয়েছে। পাশাপাশি মজিদের ব্যক্তিজীবন ও মানসিক দ্বন্দ্বও ধীরে ধীরে প্রকাশ পায়। লালসালু মূলত ধর্মীয় ভণ্ডামি ও কুসংস্কারের আড়ালে মানুষের ওপর ক্ষমতা প্রতিষ্ঠার এক গভীর ও শক্তিশালী চিত্র।",
+            "tag_ids": [
+                28,
+                1,
+                3,
+                25
+            ],
+            "updated_at": "2026-10-08 15:34:38",
+            "created_at": "2026-10-08 14:10:50"
+        },
+        {
+            "id": 10,
+            "title": "হযরত ফাতিমা (রা.)-এর জীবনী",
+            "author": "Mufti Ajmal Hossain Khan",
+            "isbn": "",
+            "publisher": "",
+            "publication_year": "2010",
+            "edition": "",
+            "language": "",
+            "shelf_id": 0,
+            "status": "Available",
+            "cover_url": "",
+            "purchase_date": "",
+            "purchase_price": "220",
+            "notes": "হযরত ফাতিমা (রা.) ছিলেন মহানবী হযরত মুহাম্মদ (সা.)-এর কন্যা এবং ইসলামের ইতিহাসের একজন অত্যন্ত সম্মানিত নারী। তিনি ছিলেন হযরত খাদিজা (রা.)-এর কন্যা এবং হযরত আলী (রা.)-এর স্ত্রী। তাঁদের সন্তানদের মধ্যে হযরত হাসান (রা.) ও হযরত হুসাইন (রা.) বিশেষভাবে উল্লেখযোগ্য। তিনি ছিলেন অত্যন্ত ধার্মিক, বিনয়ী, পরহেজগার ও ধৈর্যশীল। ইসলামের কঠিন সময়ে তিনি তাঁর পিতা ও পরিবারের পাশে ছিলেন এবং ত্যাগ ও কষ্ট সহ্য করেছেন। তাঁর জীবন সরলতা, ইবাদত, পারিবারিক দায়িত্ব, ধৈর্য ও আত্মত্যাগের এক উজ্জ্বল উদাহরণ। অল্প বয়সেই তিনি ইন্তেকাল করেন। মুসলিম সমাজে তাঁর জীবন ও চরিত্র আজও নারীদের জন্য আদর্শ হিসেবে বিবেচিত হয়।",
+            "tag_ids": [
+                5,
+                4
+            ],
+            "updated_at": "2026-10-08 14:14:25",
+            "created_at": "2026-10-08 14:13:45"
+        },
+        {
+            "id": 11,
+            "title": "তিথিডোর",
+            "author": "Buddodeb Bosu",
+            "isbn": "984-569-084-X",
+            "publisher": "Aajkaal",
+            "publication_year": "2000",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1481831609i/16092157.jpg",
+            "purchase_date": "",
+            "purchase_price": "175",
+            "notes": "বুদ্ধদেব বসুর তিথিডোর একটি মনস্তাত্ত্বিক ও সম্পর্কনির্ভর উপন্যাস, যেখানে প্রেম, আকাঙ্ক্ষা, ব্যক্তিস্বাধীনতা ও মানবমনের দ্বন্দ্ব প্রধান হয়ে উঠেছে। উপন্যাসের চরিত্রগুলো নিজেদের আবেগ, প্রেম ও সামাজিক বাস্তবতার মধ্যে নানা টানাপোড়েনের মধ্য দিয়ে এগিয়ে যায়। সম্পর্কের পরিবর্তন, বিচ্ছেদ, একাকিত্ব এবং জীবনের অনিশ্চয়তা কাহিনিকে গভীরতা দিয়েছে। লেখক মানুষের অন্তর্জগত ও আবেগের সূক্ষ্ম পরিবর্তনকে অত্যন্ত সংবেদনশীলভাবে তুলে ধরেছেন। তিথিডোর মূলত প্রেম ও সম্পর্কের মধ্য দিয়ে মানুষের মন, সময় এবং জীবনের পরিবর্তনকে অনুসন্ধান করা একটি গুরুত্বপূর্ণ বাংলা উপন্যাস।",
+            "tag_ids": [
+                1,
+                3,
+                25
+            ],
+            "updated_at": "2026-10-08 18:10:44",
+            "created_at": "2026-10-08 14:18:35"
+        },
+        {
+            "id": 12,
+            "title": "আমার প্রতিবেশী ও অন্যান্য গল্প",
+            "author": "Sharif Atiq-uz-Zaman",
+            "isbn": "984-8557-46-6",
+            "publisher": "Shuchipotro",
+            "publication_year": "2005",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://eboighar-static.s3.ap-southeast-1.amazonaws.com/static/Books/book_78392018-09-12_1536732937.jpeg",
+            "purchase_date": "",
+            "purchase_price": "120",
+            "notes": "আমার প্রতিবেশী ও অন্যান্য গল্প শরীফ আতিক-উজ-জামানের অনুবাদে প্রকাশিত ১১ জন আন্তর্জাতিক খ্যাতিসম্পন্ন গল্পকারের ১৪টি গল্পের একটি সংকলন। বইটিতে উইলিয়াম সমারসেট মম, জেমস জয়েস, ডি. এইচ. লরেন্স, গ্রাহাম গ্রিন, আর্নেস্ট হেমিংওয়ে, ফ্রান্ৎস কাফকা, নাদিন গর্ডিমার, রুশদী প্রমুখ লেখকের গল্প স্থান পেয়েছে। Boishala\r\nগল্পগুলোর বিষয়বস্তু বৈচিত্র্যময় হলেও মানবজীবনের গভীর অনুভূতি, একাকিত্ব, আত্মপরিচয়, সম্পর্ক, সামাজিক বৈষম্য, ঔপনিবেশিক মানসিকতা এবং মানুষের অন্তর্গত দ্বন্দ্ব এখানে প্রধান হয়ে উঠেছে। বিশেষ করে কাফকার গল্পে বাস্তবতার আড়ালে মানুষের অচেনা মানসিক জগৎ, গর্ডিমারের গল্পে মানবিক সংকট এবং কয়েকটি গল্পে শিশুমনের সূক্ষ্ম অনুভূতি উঠে এসেছে। Boishala\r\nসব মিলিয়ে এটি কোনো একক কাহিনির বই নয়; বরং বিশ্বের বিভিন্ন সাহিত্যধারার গল্পের মাধ্যমে মানুষ ও তার জটিল জীবনকে বিভিন্ন দৃষ্টিকোণ থেকে দেখার একটি অনুবাদ-সংকলন।",
+            "tag_ids": [
+                3,
+                26
+            ],
+            "updated_at": "2026-10-08 18:10:00",
+            "created_at": "2026-10-08 14:24:14"
+        },
+        {
+            "id": 13,
+            "title": "রক্তকরবী",
+            "author": "Rabindranath Tagore",
+            "isbn": "",
+            "publisher": "",
+            "publication_year": "November, 1994",
+            "edition": "",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://rokbucket.rokomari.io/ProductNew20190903/260X372/RoktoKobori-Rabindranath_Tagore-e7511-14928.jpg",
+            "purchase_date": "",
+            "purchase_price": "100",
+            "notes": "রবীন্দ্রনাথ ঠাকুরের রক্তকরবী একটি প্রতীকধর্মী নাটক, যেখানে মানুষের স্বাধীনতা, ভালোবাসা এবং মানবিকতার সঙ্গে লোভ, শোষণ ও ক্ষমতার সংঘাত তুলে ধরা হয়েছে। নাটকের পটভূমি যক্ষপুরী—একটি স্বর্ণসমৃদ্ধ নগরী, যেখানে শ্রমিকেরা অমানবিক পরিবেশে কাজ করে এবং সম্পদ ও ক্ষমতার লোভে মানুষকে যন্ত্রে পরিণত করা হয়েছে। নন্দিনী তার প্রাণবন্ততা, সৌন্দর্য, ভালোবাসা ও স্বাধীনচেতা মানসিকতার মাধ্যমে এই অমানবিক ব্যবস্থার বিরুদ্ধে দাঁড়ায়। তার উপস্থিতি যক্ষপুরীর মানুষের মধ্যে মুক্তির আকাঙ্ক্ষা ও জীবনের প্রতি নতুন বিশ্বাস জাগিয়ে তোলে। রাজা প্রথমে ক্ষমতা ও সম্পদের আড়ালে নিজেকে লুকিয়ে রাখলেও নন্দিনীর প্রভাবে তার মধ্যেও মানবিকতার পরিবর্তন শুরু হয়। রক্তকরবী মূলত শোষণ ও বস্তুবাদী সভ্যতার বিরুদ্ধে মানবমুক্তি, প্রেম এবং জীবনের জয়গানের এক শক্তিশালী নাট্যকাব্য।",
+            "tag_ids": [
+                31,
+                3
+            ],
+            "updated_at": "2026-10-08 18:09:05",
+            "created_at": "2026-10-08 14:29:34"
+        },
+        {
+            "id": 14,
+            "title": "দৌড়",
+            "author": "Samaresh Majumder",
+            "isbn": "",
+            "publisher": "Sunondon Prokashoni",
+            "publication_year": "Aug, 1994",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwrHyWIVMyubxXBrkEjL0CvTetfsWeVKZxDKGWSVyBmg&s=10",
+            "purchase_date": "",
+            "purchase_price": "45",
+            "notes": "সমরেশ মজুমদারের দৌড় তাঁর প্রথম উপন্যাস, যেখানে মানুষের স্বপ্ন, সংগ্রাম, প্রেম ও জীবনের অনিশ্চয়তার গল্প উঠে এসেছে। উপন্যাসের চরিত্রগুলো নিজেদের ভবিষ্যৎ ও জীবনের কাঙ্ক্ষিত অবস্থানে পৌঁছানোর জন্য নানা প্রতিকূলতার মধ্য দিয়ে এগিয়ে যায়। তাদের সম্পর্ক, আবেগ, হতাশা এবং সাফল্যের আকাঙ্ক্ষার মধ্যে দিয়ে জীবনের বাস্তব চিত্র ফুটে ওঠে। ‘দৌড়’ এখানে শুধু এগিয়ে যাওয়ার অর্থে নয়, বরং জীবনের প্রতিযোগিতা ও টিকে থাকার নিরন্তর সংগ্রামের প্রতীক। তরুণ প্রজন্মের আশা-আকাঙ্ক্ষা, প্রেম ও সামাজিক বাস্তবতার মেলবন্ধনে উপন্যাসটি একটি প্রাণবন্ত জীবনকাহিনি হয়ে উঠেছে।",
+            "tag_ids": [
+                1,
+                3,
+                25
+            ],
+            "updated_at": "2026-10-08 15:44:54",
+            "created_at": "2026-10-08 14:33:06"
+        },
+        {
+            "id": 15,
+            "title": "কালবেলা",
+            "author": "Samaresh Majumder",
+            "isbn": "",
+            "publisher": "Ananda Publishers",
+            "publication_year": "1989",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM5Cbw4QeF8Z38716EMGtP_AFNUo69Yzky6SXZSTxM7A&s=10",
+            "purchase_date": "",
+            "purchase_price": "75",
+            "notes": "\"কালবেলা\" ফ্ল্যাপে লেখা কথা অনিশেষ যখন প্রথম কোলকাতায় পা রেখেছিল তখন রাস্তায় ট্রাম জ্বলছে, গুলি চলছে। উত্তরবঙ্গ থেকে আসা এই তরুণটি সেদিন দুর্ঘটনার শিকার হয়েছিল। তারপর আর পাঁচটা মানুষের মত গা ভাসিয়ে ভেসে যেতে যেতে হঠাৎ তার জীবনের মোড় পাল্টালো। ছাত্র রাজনীতি তাকে নিয়ে গেল জটিল আবর্তে। এই দেশে আর দেশের মানুষের পাশে দাঁড়ানোর দুর্বার বাসনায় বিভক্ত কম্যুনিস্ট পার্টির পতাকার নিচে গিয়ে দাঁড়াল । কিন্তু মনুষ্যত্ব এবং মানবিক মূল্যবাধ তাকে সরিয়ে নিয়ে এল উগ্র রাজনীতিতে। সত্তরের সেই আগুনের ঝাঁপ দিয়ে নিজেকে দপ্ধ করে সে দেখল, দাহ্যবস্তুর কোন সৃষ্টিশীল ক্ষমতা নেই। পুলিশের নির্মম অত্যাচারে সে যখন বিকলাঙ্গ তখন বিপ্লবের শরিকরা হয় নিঃশেষ নয় গুছিয়ে নিয়েছে আখের।\r\n\r\nঅনিমেষ অবাক হয়ে দেখল মাধবীলতাকে। মাধবীলতা কোন রাজনীতি করেনি কখনো, শুধু তাকে ভালবাসে আলোকেস্তম্ভের মত একা মাথা তুলে দাঁড়িয়ে আছে। খরতপ্ত মধ্যাহ্নে যে এক গ্লাস শীতল জলের চেয়ে বেশি কিছু হতে চায় না। বাংলাদেশের এই মেয়ে যে কিনা শুধু ধুপের মত নিজেকে পোড়ায় আগামীকালকে সুন্দর করতে। দেশ গড়ার জন্যে বিপ্লবের নিষ্ফল হতাশায় ডুবে যেতে যেতে অনিমেষ আাবিষ্কার করেছিল বিপ্লবের আর এক নাম মাধবীলতা। ‘দেশ’ পত্রিকায় ধারাবাহিক প্রকাশের সময় এই দুটি চরিত্র লক্ষ পাঠকের ভালবাসা পেয়েছিল। সুস্থ উপন্যাসের সেইখানেই সার্থকতা।",
+            "tag_ids": [
+                5,
+                1,
+                3,
+                25,
+                13
+            ],
+            "updated_at": "2026-10-08 15:45:51",
+            "created_at": "2026-10-08 15:08:43"
+        },
+        {
+            "id": 16,
+            "title": "ইক্লিপস",
+            "author": "Stephenie Meyer",
+            "isbn": "984-70112-0105-4",
+            "publisher": "Jhinuk Publication",
+            "publication_year": "2010",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://www.hachettebookgroup.com/wp-content/uploads/2025/12/9780316328142.jpg",
+            "purchase_date": "",
+            "purchase_price": "360",
+            "notes": "আন্তর্জাতিক খ্যাতিসম্পন্ন লেখক স্টেফিন মেয়ার তার বহুল পঠিত নিউ মুন উপন্যাসে পাঠকের সামনে অদ্ভুত কিছু চরিত্র নিয়ে উপস্থিত হয়েছেন। বেলা সোয়ান-আকর্ষণীয় সুন্দরী তম্বী তরুণী। সে মানব প্রজাতির প্রতিনিধি।\r\nআছে এ্যাডওয়ার্ড কুলিন- সুদর্শন,স্মার্ট, তরুণ ভ্যাম্পায়ার। জ্যাকব ব্লাক -সোনালী চুলের প্রতিশোধ পরায়ণ ভ্যাম্পায়ার।\r\nঅসম চরিত্রের ভালবাসা আবর্তিত হয়েছে গোটা উপন্যাস ঘিরে। অসম চরিত্রের দুই তরুণ-তরুণী, এ্যাডওয়ার্ড ও বেলা একে অপরের ভালবাসার আবর্তে নিজেদের জড়িয়ে ফেলেছে। ফরকস্ নামক ছোট্র শহরে তাদের ভালবাসা নিয়ে ঘটতে শুরু করছে ঘটনার জাল।\r\nবেলার জন্মদিনে ছোট্র একটু রক্তপাত থেকে শুরু হয়েছে ঘটনার সূত্রপাত। রক্তপিয়াসু ভ্যাম্পায়ার পিপাসার্ত হয়ে বেলার উপর বসাতে চেয়েছে মরণ কামড়। এ্যাডওয়ার্ডকে সপরিবারে শহর ছাড়তে হয়েছে। নিঃসঙ্গ বেলার দুঃসময়ের সাথী হয়েছে জ্যাকব ব্লাক। নেকড়েমানব । ভালবেসে ফেলেছে বেলাকে। নেকড়েমানবদের জাতশত্রু ভ্যাম্পায়ার। এ্যাডওয়ার্ড হয়ে পড়ছে জ্যাকবের চরমশত্রু এর মধ্যে পিছু নিয়েছে ভিক্টোরিয়া। তার প্রেমিককে এ্যাডওয়ার্ড হত্যা করেছিল। সেও বেলাকে হত্যা করে সেই প্রতিশোধ তুলবে। তাড়া করেছে বেলাকে.......এটা শুধু ভ্যাম্পায়ার বা নেকড়ে মানবের কাহিনী নয়- ভালবাসা, প্রতিশোধ, লোভ নিয়ে পড়া এক নিঃশ্বাসে পড়ে শেষ করার মত মন্ত্রমুদ্ধকর কাহিনী....",
+            "tag_ids": [
+                1,
+                3,
+                25,
+                32
+            ],
+            "updated_at": "2026-10-08 18:11:32",
+            "created_at": "2026-10-08 15:15:36"
+        },
+        {
+            "id": 17,
+            "title": "হ্যারি পটার অ্যান্ড দ্য গবলেট অব ফায়ার",
+            "author": "J. K. Rowling",
+            "isbn": "984-464-143-5",
+            "publisher": "Ankur",
+            "publication_year": "Jan, 2006",
+            "edition": "1st",
+            "language": "Bangla",
+            "shelf_id": 4,
+            "status": "Available",
+            "cover_url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgucI2c1CKGO_fM0eeYWgQi4fbTzfArGI8mhbea-YlH8TUF-wEkGn_r93TXkx9GI7Vvqp2In9Q6HVIyGy2RAtXoic5KN1RCpexCmvOCWoZ5fKasFngRir38fK6-1nWWLDD8nJQHpHlnWlwT/s400-rw/harry-potter-and-the-goblet-of-fire-bangla-onubad.jpg",
+            "purchase_date": "",
+            "purchase_price": "320",
+            "notes": "জে. কে. রাউলিংয়ের হ্যারি পটার অ্যান্ড দ্য গবলেট অব ফায়ার সিরিজের চতুর্থ বই। হগওয়ার্টসে এবার আয়োজন করা হয় প্রাচীন ও বিপজ্জনক ট্রাইউইজার্ড টুর্নামেন্ট, যেখানে তিনটি জাদুবিদ্যা বিদ্যালয়ের নির্বাচিত শিক্ষার্থীরা বিভিন্ন কঠিন পরীক্ষায় অংশ নেয়। কিন্তু অপ্রত্যাশিতভাবে হ্যারির নামও গবলেট অব ফায়ার থেকে নির্বাচিত হয়, যদিও সে প্রতিযোগিতায় নিজের নাম দেয়নি। হ্যারি একের পর এক বিপজ্জনক চ্যালেঞ্জ মোকাবিলা করতে থাকে। শেষ পরীক্ষায় পৌঁছে সে এমন এক ষড়যন্ত্রের মুখোমুখি হয়, যা লর্ড ভলডেমর্টের পুনরুত্থানের সঙ্গে যুক্ত। বইটির মাধ্যমে হ্যারির জীবনে শৈশবের নিরাপত্তা পেরিয়ে আরও অন্ধকার ও বিপজ্জনক এক অধ্যায়ের সূচনা হয়।",
+            "tag_ids": [
+                1,
+                3,
+                25,
+                32
+            ],
+            "updated_at": "2026-10-08 18:12:32",
+            "created_at": "2026-10-08 15:25:20"
         }
     ],
     "tags": [
@@ -247,6 +522,14 @@
         {
             "id": 30,
             "name": "Lifestyle"
+        },
+        {
+            "id": 31,
+            "name": "Drama"
+        },
+        {
+            "id": 32,
+            "name": "Translation"
         }
     ],
     "shelves": [
@@ -275,56 +558,5 @@
             "level": 4
         }
     ],
-    "loans": [
-        {
-            "id": 1,
-            "book_id": 2,
-            "borrower": "isti",
-            "loan_date": "2026-10-07",
-            "due_date": "",
-            "return_date": "2026-10-07",
-            "status": "Returned",
-            "notes": ""
-        },
-        {
-            "id": 2,
-            "book_id": 4,
-            "borrower": "রাকিব",
-            "loan_date": "2026-09-25",
-            "due_date": "2026-10-10",
-            "return_date": "2026-10-08",
-            "status": "Returned",
-            "notes": ""
-        },
-        {
-            "id": 3,
-            "book_id": 1,
-            "borrower": "সুমাইয়া",
-            "loan_date": "2026-09-15",
-            "due_date": "2026-09-30",
-            "return_date": "2026-09-28",
-            "status": "Returned",
-            "notes": ""
-        },
-        {
-            "id": 4,
-            "book_id": 3,
-            "borrower": "তানভীর",
-            "loan_date": "2026-10-01",
-            "due_date": "2026-10-15",
-            "return_date": "2026-10-08",
-            "status": "Returned",
-            "notes": ""
-        },
-        {
-            "id": 5,
-            "book_id": 5,
-            "borrower": "নাঈম",
-            "loan_date": "2026-08-10",
-            "due_date": "2026-08-25",
-            "return_date": "2026-08-24",
-            "status": "Returned",
-            "notes": ""
-        }
-    ]
+    "loans": []
 }

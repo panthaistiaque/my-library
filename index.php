@@ -241,8 +241,8 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 	.input-icon>i{ position:absolute; left:.8rem; top:50%; transform:translateY(-50%); color:var(--bs-secondary-color); pointer-events:none; }
 	.input-icon>.form-control{ padding-left:2.4rem; }
 	.section-label{ font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--bs-secondary-color); border-bottom:1px dashed var(--bs-border-color); padding-bottom:.5rem; margin-top:.25rem; }
-	.tag-scroll{ max-height:180px; overflow-y:auto; border:1px dashed var(--bs-border-color); border-radius:.75rem; background:var(--bs-tertiary-bg); }
-	.tag-scroll label{ font-size:.9rem; }
+	.tag-scroll{ max-height:180px; overflow-y:auto; border:1px dashed var(--bs-border-color); border-radius:.75rem; background:var(--bs-tertiary-bg); display:grid; grid-template-columns:repeat(5,1fr); gap:.6rem 1rem; align-content:start; }
+	.tag-scroll label{ font-size:.9rem; display:flex; align-items:center; gap:.4rem; }
 	.list-loan{ display:flex; justify-content:space-between; align-items:center; gap:.75rem; padding:.9rem 0; border-bottom:1px dashed var(--bs-border-color); }
 	.list-loan:last-child{ border-bottom:0; }
 	.muted{ color:var(--bs-secondary-color); font-size:.85rem; }
@@ -251,6 +251,12 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 	.empty{ text-align:center; padding:3rem 1.25rem; }
 	.empty i{ font-size:2.6rem; color:var(--bs-secondary-color); opacity:.5; display:block; margin-bottom:.75rem; }
 	.empty h6{ font-weight:600; }
+	.modal-dialog-scrollable{ max-height:calc(100vh - 3.5rem); }
+	.modal-dialog-scrollable .modal-content{ display:flex; flex-direction:column; max-height:calc(100vh - 3.5rem); overflow:hidden; }
+	.modal-dialog-scrollable .modal-content form{ display:flex; flex-direction:column; flex:1; min-height:0; }
+	.modal-dialog-scrollable .modal-body{ overflow-y:auto; min-height:0; }
+	.modal-dialog-scrollable .modal-header,
+	.modal-dialog-scrollable .modal-footer{ flex-shrink:0; }
 	@keyframes fadeUp{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
 	.fade-up{ animation:fadeUp .35s ease both; }
 	.fade-up-1{ animation-delay:.03s; } .fade-up-2{ animation-delay:.08s; } .fade-up-3{ animation-delay:.13s; } .fade-up-4{ animation-delay:.18s; }
@@ -288,7 +294,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
       <h2 class="fw-bold mb-1"><?=h(ucfirst($section))?></h2>
     </div>
     <div class="d-flex gap-2">
-      <?php if($section==='books'):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookModal"><i class="bi bi-plus-lg me-1"></i>Add Book</button><?php endif;?>
+      <?php if(in_array($section,['dashboard','books'],true)):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookModal"><i class="bi bi-plus-lg me-1"></i>Add Book</button><?php endif;?>
       <?php if($section==='tags'):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tagModal"><i class="bi bi-plus-lg me-1"></i>Add Tag</button><?php endif;?>
       <?php if($section==='shelves'):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#shelfModal"><i class="bi bi-plus-lg me-1"></i>Add Shelf</button><?php endif;?>
       <?php if($section==='lending'):?><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loanModal"><i class="bi bi-plus-lg me-1"></i>Lend Book</button><?php endif;?>
@@ -431,6 +437,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
           <td><?=status_badge($b['status']??'Available')?></td>
           <td class="text-end text-nowrap">
             <a class="btn btn-sm btn-outline-primary" href="?section=books&edit=<?=$b['id']?>"><i class="bi bi-pencil"></i></a>
+            <button type="button" class="btn btn-sm btn-outline-secondary" title="View details" data-book-id="<?=$b['id']?>" data-bs-toggle="modal" data-bs-target="#viewBookModal"><i class="bi bi-eye"></i></button>
             <form method="post" class="d-inline" onsubmit="return confirm('Delete this book?')">
               <input type="hidden" name="action" value="delete_book"><input type="hidden" name="book_id" value="<?=$b['id']?>">
               <button class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
@@ -561,7 +568,7 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
   <div class="col-md-4"><label class="form-label">Cover URL</label><div class="input-icon"><i class="bi bi-image"></i><input class="form-control" name="cover_url" value="<?=h($editBook['cover_url']??'')?>" placeholder="https://.../cover.jpg"></div></div>
 
   <div class="col-12"><div class="section-label">Organization</div></div>
-  <div class="col-12"><label class="form-label">Tags <span class="muted fw-normal">(A–Z)</span></label><div class="tag-scroll p-3"><?php if(!$tagsAlpha):?><span class="muted">No tags yet — create them from the Tags page.</span><?php endif;?><?php foreach($tagsAlpha as $t):?><label class="me-3"><input type="checkbox" name="tag_ids[]" value="<?=$t['id']?>"<?=in_array((int)$t['id'],array_map('intval',$editBook['tag_ids']??[]),true)?' checked':''?>> <?=h($t['name'])?></label><?php endforeach;?></div></div>
+  <div class="col-12"><label class="form-label">Tags <span class="muted fw-normal">(A–Z)</span></label><div class="tag-scroll p-3"><?php if(!$tagsAlpha):?><span class="muted">No tags yet — create them from the Tags page.</span><?php endif;?><?php foreach($tagsAlpha as $t):?><label><input type="checkbox" name="tag_ids[]" value="<?=$t['id']?>"<?=in_array((int)$t['id'],array_map('intval',$editBook['tag_ids']??[]),true)?' checked':''?>> <?=h($t['name'])?></label><?php endforeach;?></div></div>
   <div class="col-12"><label class="form-label">Notes</label><textarea class="form-control" name="notes" rows="3" placeholder="Personal notes, condition, edition details..."><?=h($editBook['notes']??'')?></textarea></div>
   <datalist id="authorList"><?php foreach($authorList as$v):?><option value="<?=h($v)?>"><?php endforeach;?></datalist>
   <datalist id="languageList"><?php foreach($languageList as$v):?><option value="<?=h($v)?>"><?php endforeach;?></datalist>
@@ -571,6 +578,13 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 </div></div>
 <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save Book</button></div>
 </form></div></div></div>
+
+<!-- View Book Modal -->
+<div class="modal fade" id="viewBookModal" tabindex="-1"><div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content">
+<div class="modal-header"><h5 class="modal-title" id="viewTitle">Book Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+<div class="modal-body" id="viewBookBody"></div>
+<div class="modal-footer"><div class="me-auto" id="viewEditLink"></div><button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button></div>
+</div></div></div>
 
 <!-- Tag Modal -->
 <div class="modal fade" id="tagModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form method="post"><input type="hidden" name="action" value="save_tag"><input type="hidden" name="tag_id" value="<?=h($editTag['id']??0)?>">
@@ -608,12 +622,44 @@ $flashIcons=['success'=>'check-circle-fill','danger'=>'exclamation-triangle-fill
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+var bookData=<?=json_encode($d['books'],JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)?>;
+var tagData=<?=json_encode($d['tags'],JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)?>;
+var shelfData=<?=json_encode($d['shelves'],JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)?>;
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+function findRow(arr,id){for(var i=0;i<arr.length;i++){if(arr[i].id==id)return arr[i];}return null;}
+function renderBook(id){
+  var b=findRow(bookData,id);if(!b)return;
+  var sh=shelfData.length?findRow(shelfData,(b.shelf_id||0)):null;
+  var tags=[];(b.tag_ids||[]).forEach(function(tid){var t=findRow(tagData,tid);if(t)tags.push('<span class="badge bg-light text-secondary border">'+esc(t.name)+'</span>');});
+  var notes=(b.notes||'').trim();
+  var details=[];
+  var fields={ISBN:b.isbn,Publisher:b.publisher,'Edition':b.edition,Language:b.language,'Purchase Date':b.purchase_date,'Purchase Price':b.purchase_price?('$'+esc(b.purchase_price)):''};
+  for(var k in fields){if(fields[k])details.push('<div class="col-6 col-md-4"><div class="small text-secondary">'+k+'</div><div>'+esc(fields[k])+'</div></div>');}
+  document.getElementById('viewTitle').textContent='Details — '+b.title;
+  document.getElementById('viewBookBody').innerHTML=
+    '<div class="d-flex align-items-start gap-3 mb-3">'+
+      '<span class="cover" style="width:64px;height:92px;font-size:1.5rem">'+(b.cover_url?'<img src="'+esc(b.cover_url)+'" alt="">':'<i class="bi bi-book"></i>')+'</span>'+
+      '<div class="min-w-0 flex-grow-1"><h5 class="mb-1 fw-semibold">'+esc(b.title)+'</h5>'+
+      '<div class="text-secondary">'+esc(b.author||'Unknown author')+'</div>'+
+      (tags.length?'<div class="mt-2">'+tags.join(' ')+'</div>':'')+
+      '</div>'+
+      '<div class="ms-auto flex-shrink-0">'+(b.status?statusBadgeHTML(b.status):'')+'</div>'+
+      '</div>'+
+      ((sh&&sh.name)?'<div class="small text-secondary mb-3"><i class="bi bi-archive me-1"></i>'+esc(sh.name)+(sh.location?' — '+esc(sh.location):'')+'</div>':'')+
+      (details.length?'<div class="row g-3 border-top pt-3 mb-3">'+details.join('')+'</div>':'')+
+      '<div class="section-label mb-2">Notes</div>'+
+      (notes?'<div class="p-3 rounded border" style="white-space:pre-wrap;max-height:220px;overflow-y:auto">'+esc(notes)+'</div>':'<div class="muted">No notes for this book.</div>');
+  document.getElementById('viewEditLink').innerHTML='<a class="btn btn-sm btn-outline-primary" href="?section=books&edit='+id+'"><i class="bi bi-pencil me-1"></i>Edit</a>';
+}
+function statusBadgeHTML(s){var m={'Available':['success','Available'],'Borrowed':['warning','Borrowed'],'Wishlist':['primary','Wishlist']};var v=m[s]||['secondary',s];return '<span class="badge bg-'+v[0]+'-subtle text-'+v[0]+'-emphasis">'+esc(v[1])+'</span>';}
 document.addEventListener('DOMContentLoaded',function(){
   <?php if($editBook):?>new bootstrap.Modal(document.getElementById('bookModal')).show();<?php endif;?>
   <?php if($editTag):?>new bootstrap.Modal(document.getElementById('tagModal')).show();<?php endif;?>
   <?php if($editShelf):?>new bootstrap.Modal(document.getElementById('shelfModal')).show();<?php endif;?>
   var flash=document.getElementById('flashAlert');
   if(flash) setTimeout(function(){ bootstrap.Alert.getOrCreateInstance(flash).close(); },4200);
+  var viewBtns=document.querySelectorAll('[data-bs-target="#viewBookModal"]');
+  for(var i=0;i<viewBtns.length;i++){viewBtns[i].addEventListener('click',function(){renderBook(parseInt(this.getAttribute('data-book-id'),10));});}
   var links = document.querySelectorAll('.sidebar a');
   for(var i=0;i<links.length;i++){
     links[i].addEventListener('click',function(){
